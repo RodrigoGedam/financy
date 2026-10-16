@@ -87,6 +87,19 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      change_transaction: {
+        Args: {
+          p_amount?: string
+          p_category_id?: string
+          p_delete?: boolean
+          p_description?: string
+          p_expected: Json
+          p_id: string
+          p_kind?: string
+          p_occurred_on?: string
+        }
+        Returns: string
+      }
       save_transaction: {
         Args: {
           p_amount: string

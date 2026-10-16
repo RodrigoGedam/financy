@@ -4,9 +4,11 @@ Organização de finanças pessoais individuais, com prioridade para desktop. Pr
 
 ## Estado atual
 
-Base React/TypeScript/Vite, cadastro, login, sessão persistente, edição de nome e logout local com Supabase Auth. Categorias têm criação, edição, exclusão protegida e contagem de transações de todo o histórico. Dashboard e transações continuam como rotas reservadas para as próximas entregas.
+Base React/TypeScript/Vite, cadastro, login, sessão persistente, edição de nome e logout local com Supabase Auth. Categorias têm criação, edição, exclusão protegida e contagem de transações de todo o histórico. Transações têm CRUD, dinheiro textual exato, proteção contra conflitos, filtros na URL e paginação remota. Dashboard continua reservado para a próxima entrega.
 
 A tarefa 2 adiciona o schema financeiro em desenvolvimento, com RLS, integridade e transporte decimal textual validados pela Data API. Consulte o [registro de execução](docs/superpowers/execution/2026-10-15-financy-data.md).
+
+A [tarefa 4](docs/superpowers/execution/2026-10-16-financy-transactions.md) foi validada com 151 unitários, 16 integrações reais e oito E2E de acesso/transações. Fluxos específicos: `pnpm test:integration -- tests/integration/transactions.test.ts` e `pnpm exec playwright test tests/e2e/transactions.spec.ts`. Fixtures somente em desenvolvimento, com limpeza dos próprios dados.
 
 A [tarefa 3](docs/superpowers/execution/2026-10-16-financy-categories.md) usa catálogo fechado e contagens agregadas na Data API, sem baixar o histórico de transações. Testes específicos: `pnpm test:integration -- tests/integration/categories.test.ts` e `pnpm exec playwright test tests/e2e/categories.spec.ts`.
 

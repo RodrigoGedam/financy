@@ -172,3 +172,11 @@ Diferenças existentes, fora da alteração desta etapa: placeholder local `#6B7
 **Prompt 1 concluído para o catálogo necessário ao banco:** 7 chaves de cor com tokens e 16 chaves de ícone com origem rastreável. Não há lacuna de catálogo bloqueando as constraints do prompt 2. O catálogo não comprova RLS, integridade financeira ou transporte decimal; essas verificações pertencem à próxima etapa.
 
 Antes das telas, retomar as capturas completas quando o acesso permitir; verificar detalhes internos dos filtros, tipografia das páginas, cores dos estados de botões, overlay e compatibilidade visual dos ícones instalados. Estados ausentes e adaptação desktop continuam exigências funcionais com validação futura. Nenhuma tela, módulo, dependência, migration ou ambiente foi alterado nesta extração.
+
+## Implementação de transações — 16/10/2026
+
+Adaptações do código, distintas de observações do Figma: a listagem e o modal consomem os frames `3104:362` e `3107:4295`, reconsultados nesta entrega. O catálogo fechado de categorias permanece o mesmo da interface e das constraints SQL.
+
+Filtros são aplicados em conjunto pelo botão Aplicar filtros e persistidos na URL; Limpar filtros retorna à página 1. O controle nativo de mês vazio representa todos os meses. Atualizar lista recarrega transações e categorias após mudanças externas; edição/exclusão sobre dados alterados é recusada no banco. Esses controles funcionais aumentam a altura do painel em relação ao mock.
+
+Listagem e modal inspecionados em 1024/1440 px. A coluna de valor recebe mais espaço em 1024 para preservar a leitura de `9.007.199.254.740.993,01`; valores maiores podem quebrar linha sem perder dígitos. O ano é exibido com quatro dígitos. Modal com foco inicial, devolução de foco, escape e erros por campo associados via `aria-invalid`/`aria-describedby`; confirmação de exclusão inicia em Cancelar e informa descrição e valor. Evidências e testes no [registro de transações](docs/superpowers/execution/2026-10-16-financy-transactions.md).
