@@ -27,6 +27,8 @@ Use somente a chave publicável no frontend. Credenciais administrativas, senhas
 | `pnpm dev` | Servidor local |
 | `pnpm typecheck` | Verificação TypeScript |
 | `pnpm lint` | Análise estática |
+| `pnpm format` | Aplicar a formatação do Prettier |
+| `pnpm format:check` | Conferir formatação sem alterar arquivos |
 | `pnpm test` | Testes unitários de comportamento |
 | `pnpm test:integration` | RLS, integridade e decimais no Supabase de desenvolvimento |
 | `pnpm test:e2e` | Fluxos no Chromium e Supabase de desenvolvimento |
@@ -34,6 +36,12 @@ Use somente a chave publicável no frontend. Credenciais administrativas, senhas
 | `pnpm preview` | Conferir o build local |
 
 Para os testes de navegador, instale o Chromium com `pnpm exec playwright install chromium`. Crie `.env.test.local` com `FINANCY_DEV_PROJECT_REF=gorymmpnavtudztnasny`. O teste que escreve contas valida a referência de desenvolvimento antes de enviar requisições; nunca o aponte para produção. O Playwright inicia seu próprio servidor e recusa uma porta 5173 já ocupada para evitar testar outro ambiente. O teste de autenticação cria contas fictícias identificadas por `financy-e2e-` e registra sessões somente nos artefatos locais ignorados pelo Git. Limpe somente as contas dessas execuções em desenvolvimento quando não forem mais necessárias.
+
+## Formatação
+
+Prettier usa tabs para indentação, com largura visual de 4 espaços (`useTabs: true`, `tabWidth: 4`), aspas simples e sem ponto e vírgula. A configuração está em `.prettierrc.json`; `.editorconfig` orienta editores compatíveis. YAML e Markdown usam espaços conforme suas convenções. O Prettier pode usar espaços para alinhamento mesmo quando a indentação usa tabs.
+
+Execute `pnpm format` para aplicar ou `pnpm format:check` para conferir. A configuração não reformata automaticamente os arquivos existentes: eles podem ser apontados pelo check até a primeira aplicação. O formatador respeita `.gitignore`; lockfile, tipos gerados do Supabase e assets são excluídos por `.prettierignore`. SQL não é formatado pelo Prettier instalado, sem plugins adicionais.
 
 ## Stack
 
