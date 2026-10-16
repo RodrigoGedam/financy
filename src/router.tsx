@@ -19,7 +19,7 @@ const login = createRoute({ getParentRoute: () => root, path: '/login', componen
 const signup = createRoute({ getParentRoute: () => root, path: '/cadastro', component: lazyRouteComponent(() => import('./features/auth/signup-page'), 'SignupPage') })
 const app = createRoute({ getParentRoute: () => root, id: 'app', component: AppShell })
 const dashboard = createRoute({ getParentRoute: () => app, path: '/', component: () => <FeaturePending title="Dashboard" /> })
-const categories = createRoute({ getParentRoute: () => app, path: '/categorias', component: () => <FeaturePending title="Categorias" /> })
+const categories = createRoute({ getParentRoute: () => app, path: '/categorias', component: lazyRouteComponent(() => import('./features/categories/categories-page'), 'CategoriesPage') })
 const transactions = createRoute({ getParentRoute: () => app, path: '/transacoes', component: () => <FeaturePending title="Transações" /> })
 const profile = createRoute({ getParentRoute: () => app, path: '/perfil', component: lazyRouteComponent(() => import('./features/auth/profile-page'), 'ProfilePage') })
 function FeaturePending({ title }: { title: string }) { return <div className="page-content"><h1>{title}</h1><p className="mt-4 text-gray-600">Seu acesso está pronto. Esta área será disponibilizada nas próximas entregas.</p></div> }

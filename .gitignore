@@ -4,6 +4,7 @@ dist/
 !.env.example
 .vercel/
 test-results/
+test-fixtures/
 playwright-report/
 coverage/
 .superpowers/
