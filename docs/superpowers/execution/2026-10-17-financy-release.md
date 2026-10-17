@@ -1,5 +1,13 @@
 # Financy — candidata à publicação
 
+## Encerramento após resolução das pendências — 17/10/2026
+
+O usuário concluiu a autenticação GitHub e autorizou explicitamente corrigir somente as três versões internas. `gh api user` confirmou RodrigoGedam; `gh api repos/RodrigoGedam/financy` confirmou proprietário, visibilidade pública e main. Push realizado com sucesso e `git ls-remote origin refs/heads/main` confirmou `381f240789a4abe463cb222e7050ac1e952bada0`, incluindo o código publicado e seu registro. A atualização de documentação deste encerramento segue em commit posterior; código frontend inalterado.
+
+SQL e três versões geradas foram reconferidos antes da correção. Uma única operação atômica alterou exclusivamente version nos três registros autorizados, condicionada a nomes, hashes do SQL e ausência dos destinos. Resultado: `20261015182208` / financy_core, `20261016183142` / financy_transaction_conflicts, `20261016190434` / financy_dashboard. A consulta posterior confirmou correspondência local/remota e hashes de SQL preservados. Nenhuma migration foi reaplicada, nenhuma tabela ou dado financeiro foi alterado nesta correção.
+
+Deployment `dpl_FqsuTixC94vVFBN1CYE7UbB9khke` reconferido READY, aliases canônico e adicional mantidos; nenhum novo deployment foi necessário. Fonte publicada continua `abcff9eca763fc6a64e1880e3a76a58f9e3a5849`. Pendências de acesso, push e histórico resolvidas. Testes de escrita continuam exclusivamente de desenvolvimento; não se repetiram suítes financeiras por uma atualização de documentação/metadados. Limites de 1920 px, contraste completo, outros navegadores, autenticação/CRUD reais em produção e recuperação de banco ensaiada permanecem explicitamente não verificados. As seções abaixo preservam a cronologia, inclusive o estado parcial anterior e a recusa inicial.
+
 ## Execução autorizada em 17/10/2026 — frontend publicado, pendências registradas
 
 | Resultado atual | Evidência |

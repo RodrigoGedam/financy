@@ -4,11 +4,11 @@ Organização de finanças pessoais individuais, com prioridade para desktop. Pr
 
 ## Estado atual
 
-**Frontend publicado:** [financy-gules.vercel.app](https://financy-gules.vercel.app), deployment Production READY de 17/10/2026, código do commit `abcff9eca763fc6a64e1880e3a76a58f9e3a5849`. Smoke de leitura confirmou rotas SPA, login/cadastro e redirecionamento do visitante. O bundle usa Supabase de produção. O envio do histórico ao novo [repositório público](https://github.com/RodrigoGedam/financy) aguarda autenticação Git local; a normalização dos timestamps do histórico de migrations aguarda autorização específica após recusa automática. [Estado parcial e detalhes da release](docs/superpowers/execution/2026-10-17-financy-release.md). Não foram criados usuários ou dados de teste em produção.
+**Publicado:** [financy-gules.vercel.app](https://financy-gules.vercel.app), deployment Production READY de 17/10/2026, código do commit `abcff9eca763fc6a64e1880e3a76a58f9e3a5849`. Smoke de leitura confirmou rotas SPA, login/cadastro e redirecionamento do visitante. O bundle usa Supabase de produção. O histórico anonimizado foi enviado à branch main do [repositório público](https://github.com/RodrigoGedam/financy), e as três versões de migrations em produção estão alinhadas aos arquivos locais, com SQL preservado e sem reaplicação. [Detalhes e limites da release](docs/superpowers/execution/2026-10-17-financy-release.md). Não foram criados usuários ou dados de teste em produção.
 
 A [revisão integrada em desenvolvimento](docs/superpowers/execution/2026-10-16-financy-integrated-review.md) passou com 155 unitários, 19 integrações reais e 15 E2E, além de typecheck, lint e build. Inclui matriz AUTH/CAT/TX/DASH/LIST, correções das travas de teste e rastreabilidade de fixtures, inspeção em 1024/1440 px e limpeza conferida. Esses resultados antecedem a publicação registrada acima.
 
-A [preparação da publicação de 17/10](docs/superpowers/execution/2026-10-17-financy-release.md) foi autorizada posteriormente e executada até o estado parcial acima. GitHub/Vercel foram criados, as três migrations foram aplicadas uma vez e Site URL do Auth foi ajustada. O repositório antigo `ftr-financy` foi preservado.
+A [preparação da publicação de 17/10](docs/superpowers/execution/2026-10-17-financy-release.md) foi autorizada posteriormente e executada. GitHub/Vercel foram criados, as três migrations foram aplicadas uma vez e Site URL do Auth foi ajustada. O repositório antigo `ftr-financy` foi preservado. A documentação de encerramento foi commitada após o commit-fonte do deployment, sem mudanças no código do frontend.
 
 Base React/TypeScript/Vite, cadastro, login, sessão persistente, edição de nome e logout local com Supabase Auth. Categorias têm criação, edição, exclusão protegida e contagem de transações de todo o histórico. Transações têm CRUD, dinheiro textual exato, proteção contra conflitos, filtros na URL e paginação remota. Dashboard apresenta saldo histórico, receitas/despesas mensais, cinco maiores categorias de despesa e cinco transações recentes, calculados no PostgreSQL.
 
@@ -71,7 +71,7 @@ Estado de sessão em um provider único; dados remotos em TanStack Query; limpez
 
 Vite incorpora as variáveis durante o build: mudar o ambiente exige novo build. Não promover um bundle de Preview com credenciais de desenvolvimento para Production. Não enviar `.env.local`, sessões, traces, backups ou `graphify-out/` para o GitHub/Vercel; `.gitignore` e `.vercelignore` protegem esses artefatos. Segredos administrativos nunca recebem prefixo `VITE_` e não são necessários ao frontend.
 
-URLs exatas do Auth, migrations, verificação não destrutiva após deploy e rollback estão em [operações](docs/operations.md). Nenhuma suíte que cria contas/dados pode rodar em produção. O frontend foi publicado; pendências de envio Git e histórico de migrations estão registradas acima.
+URLs exatas do Auth, migrations, verificação não destrutiva após deploy e rollback estão em [operações](docs/operations.md). Nenhuma suíte que cria contas/dados pode rodar em produção. O frontend e as fontes estão publicados, com histórico de migrations alinhado; futuras mudanças de código precisam de deployment explícito, pois não há integração Git automática com a Vercel.
 
 ## Referências e plano
 
@@ -84,4 +84,4 @@ URLs exatas do Auth, migrations, verificação não destrutiva após deploy e ro
 
 ## Limitações desta etapa
 
-Sem recuperação de senha ou alteração de e-mail/senha na interface. Cadastro não confirma a propriedade do e-mail, por decisão do escopo. Logout é local e não revoga instantaneamente um JWT emitido. Projetos Supabase Free podem pausar por inatividade. Frontend publicado na Vercel; envio das fontes e alinhamento do histórico de migrations ainda pendentes conforme o registro da release. CRUD e isolamento com sessões reais foram testados somente em desenvolvimento.
+Sem recuperação de senha ou alteração de e-mail/senha na interface. Cadastro não confirma a propriedade do e-mail, por decisão do escopo. Logout é local e não revoga instantaneamente um JWT emitido. Projetos Supabase Free podem pausar por inatividade. CRUD e isolamento com sessões reais foram testados somente em desenvolvimento; produção recebeu smoke não destrutivo.
