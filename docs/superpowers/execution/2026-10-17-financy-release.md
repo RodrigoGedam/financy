@@ -1,6 +1,39 @@
 # Financy — candidata à publicação
 
-## Execução autorizada em 17/10/2026 — em andamento
+## Execução autorizada em 17/10/2026 — frontend publicado, pendências registradas
+
+| Resultado atual | Evidência |
+| --- | --- |
+| Commit do código publicado | `abcff9eca763fc6a64e1880e3a76a58f9e3a5849`, main local; arquivos preservados após anonimização |
+| GitHub | `https://github.com/RodrigoGedam/financy`, público e criado; push recusado por falta de credencial local (não por conteúdo). `gh api user` indica login necessário; usuário foi orientado a `gh auth login` e `gh auth setup-git`, sem compartilhar tokens |
+| Vercel | `financy`, `prj_KwAs12YJXoldXBQErlBQd5QM9QG1`, escopo `team_GEBnCB8faol74Ab23BukVkI5` |
+| Deployment | `dpl_FqsuTixC94vVFBN1CYE7UbB9khke`, target production, **READY** confirmado pelo get_deployment |
+| URL canônica | `https://financy-gules.vercel.app` |
+| URL específica | `https://financy-bbg2tveqz-rodrigogedams-projects.vercel.app` |
+| Alias adicional confirmado | `https://financy-rodrigogedams-projects.vercel.app` |
+| Origem do deployment | 85 arquivos extraídos de git show do commit acima, base64, filtrados pelas exclusões preparadas; envio MCP direto, sem usar credenciais Git nem arquivos .env/artefatos locais |
+| Variáveis | Development/Preview → dev; Production → prod; somente as duas publicáveis, Node 24 |
+| Auth | Site URL canônica salva no painel e persistida após reload; sem redirects extras ou curingas |
+
+SQL das três migrations aplicado uma única vez em produção e comparado aos arquivos aprovados, sem divergência após normalizar finais de linha/whitespace externo. RLS confirmado nas duas tabelas, oito políticas; save_transaction/change_transaction/get_dashboard são invoker, search_path vazio, anon sem EXECUTE e authenticated com EXECUTE. Advisor de segurança retornou zero lints nessa consulta. Nenhum dado/usuário fictício inserido em produção; nenhuma suíte de escrita executada lá.
+
+| Arquivo/version local | Versão registrada pelo MCP em produção | Situação |
+| --- | --- | --- |
+| `20261015182208_financy_core.sql` | `20261017175510` | Schema aplicado e SQL conferido; metadado pendente |
+| `20261016183142_financy_transaction_conflicts.sql` | `20261017175607` | Aplicado e SQL conferido; metadado pendente |
+| `20261016190434_financy_dashboard.sql` | `20261017175641` | Aplicado e SQL conferido; metadado pendente |
+
+A revisão automática recusou o UPDATE da primeira versão interna: motivo informado, alteração de registro interno em produção exige autorização específica. A operação **não ocorreu**. Foi solicitada uma única autorização específica para os três pares acima; até a resposta não se tentou repair via CLI, outro UPDATE ou workaround. Não rodar db push ou reaplicar: o banco já tem os objetos. Esse alinhamento é uma pendência operacional real e não falha de schema/RLS.
+
+Smoke publicado: seis rotas GET retornaram HTTP 200 e o mesmo hash de index (`dad22a3859f2a2ad072722165046aa194dfab2629f29f3e5839055f54fb525b3`). Asset de entrada e chunk compartilhado responderam 200; juntos confirmaram URL Supabase prod, nenhuma URL dev e chave publicável presente, sem imprimir valores e sem candidatos de chave administrativa. A primeira checagem só no entry não continha o cliente Supabase; a verificação foi completada no chunk importado, sem interpretar ausência inicial como sucesso.
+
+No navegador, com espera pelo heading após carregar a SPA, `/`, `/perfil`, `/categorias` e `/transacoes?month=all&page=1` redirecionaram o visitante a `/login`; `/cadastro` exibiu Criar conta com labels e senha mínima; reload do login funcionou. Nenhum formulário foi enviado. Não se afirmou login autenticado ou CRUD em produção.
+
+Rollback: esta é a primeira publicação, sem deployment anterior. O deployment e a revisão acima ficam identificados para rollback futuro. Falha futura de frontend pode voltar a esse artefato após verificação/autorização operacional; banco e Auth não voltam automaticamente. Nenhum export/restore foi necessário ou executado para estas migrations aditivas sobre o alvo vazio observado. As limitações de testes de 1920/contraste/outros navegadores continuam as do prompt 7.
+
+Pendências atuais: autenticação técnica da CLI/Git para enviar main ao repositório já criado; autorização específica para alinhar as versões internas; depois conferir remoto/hash e atualizar o registro. Não falta nova autorização para publicar: ela já foi recebida. Não repetir criação de projetos, migrations ou deploy por causa dessas pendências. Commits de documentação posteriores ao commit-fonte apenas registram estes resultados e não mudam os fontes do frontend publicado.
+
+### Eventos iniciais da execução (histórico)
 
 Após a preparação e a lista concreta abaixo, o usuário autorizou explicitamente sua execução. A consulta explícita ao escopo Vercel voltou a funcionar antes da autorização. A candidata foi reconferida com os mesmos 100 arquivos e fingerprint `937c385a243947aa0e949404f6fac9281be855bfff313e9922c923ce649b3f90`; unitários (155), typecheck, lint e build passaram novamente (Vite 4,33 s). Integrações/E2E mantêm a evidência anterior de desenvolvimento; não foram executados em produção.
 

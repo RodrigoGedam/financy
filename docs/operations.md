@@ -1,5 +1,11 @@
 # Ambientes e operação
 
+Estado de 17/10/2026 após autorização: frontend Production READY em `https://financy-gules.vercel.app`, projeto Vercel `financy` / `prj_KwAs12YJXoldXBQErlBQd5QM9QG1`, deployment `dpl_FqsuTixC94vVFBN1CYE7UbB9khke`, fonte `abcff9eca763fc6a64e1880e3a76a58f9e3a5849`. Os arquivos foram enviados diretamente ao deploy pelo MCP a partir desse commit, preservando `.vercelignore`; nenhuma chave administrativa foi usada no bundle. O repositório GitHub novo foi criado público, mas o push aguarda autenticação local GitHub. Não há conexão Git automática com a Vercel.
+
+As três migrations foram aplicadas uma vez em produção pelo MCP, com SQL comparado integralmente aos arquivos locais. O MCP registrou versões geradas `20261017175510`, `20261017175607`, `20261017175641`, correspondentes respectivamente às versões locais `20261015182208`, `20261016183142`, `20261016190434`. **Não executar db push/reaplicar enquanto houver essa divergência de metadado**: os objetos já existem e estão verificados. A revisão automática recusou o UPDATE desses registros por exigir autorização específica; a pergunta com o mapeamento exato está pendente. Não foi contornada a recusa por outro mecanismo.
+
+Site URL de produção salva e reconferida após reload: `https://financy-gules.vercel.app`; allowlist adicional vazia, coerente com login/senha sem redirects explícitos. Desenvolvimento conserva a URL local; não houve deployment Preview a cadastrar. Smoke somente GET/leitura: `/`, `/login`, `/cadastro`, `/perfil`, `/categorias`, `/transacoes?month=all&page=1` responderam 200 com index SPA; navegador mostrou cadastro/login e redirecionou visitante das rotas privadas. Bundle servido confirmou endpoint de produção, ausência de endpoint dev e de valores com formato administrativo. Histórico de produção, recuperação e push pendentes no [registro da release](superpowers/execution/2026-10-17-financy-release.md).
+
 Organização Supabase escolhida: `RodrigoGedam's Org` (`nkblcxsitlciadoapxzo`). Ambos os projetos foram criados pelo usuário no plano Free, região São Paulo (`sa-east-1`).
 
 | Ambiente | Projeto | Referência |
