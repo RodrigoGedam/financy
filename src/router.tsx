@@ -20,10 +20,9 @@ const root = createRootRoute({ component: Root, notFoundComponent: () => <div cl
 const login = createRoute({ getParentRoute: () => root, path: '/login', component: lazyRouteComponent(() => import('./features/auth/login-page'), 'LoginPage') })
 const signup = createRoute({ getParentRoute: () => root, path: '/cadastro', component: lazyRouteComponent(() => import('./features/auth/signup-page'), 'SignupPage') })
 const app = createRoute({ getParentRoute: () => root, id: 'app', component: AppShell })
-const dashboard = createRoute({ getParentRoute: () => app, path: '/', component: () => <FeaturePending title="Dashboard" /> })
+const dashboard = createRoute({ getParentRoute: () => app, path: '/', component: lazyRouteComponent(() => import('./features/dashboard/dashboard-page'), 'DashboardPage') })
 const categories = createRoute({ getParentRoute: () => app, path: '/categorias', component: lazyRouteComponent(() => import('./features/categories/categories-page'), 'CategoriesPage') })
 const transactions = createRoute({ getParentRoute: () => app, path: '/transacoes', validateSearch: (raw: Record<string, unknown> & SearchSchemaInput) => parseTransactionSearch(raw), component: lazyRouteComponent(() => import('./features/transactions/transactions-page'), 'TransactionsPage') })
 const profile = createRoute({ getParentRoute: () => app, path: '/perfil', component: lazyRouteComponent(() => import('./features/auth/profile-page'), 'ProfilePage') })
-function FeaturePending({ title }: { title: string }) { return <div className="page-content"><h1>{title}</h1><p className="mt-4 text-gray-600">Seu acesso está pronto. Esta área será disponibilizada nas próximas entregas.</p></div> }
 export const router = createRouter({ routeTree: root.addChildren([login, signup, app.addChildren([dashboard, categories, transactions, profile])]), defaultPreload: 'intent', parseSearch: parseAppSearch, stringifySearch: stringifyAppSearch })
 declare module '@tanstack/react-router' { interface Register { router: typeof router } }

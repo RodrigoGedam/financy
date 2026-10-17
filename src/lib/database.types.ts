@@ -100,6 +100,7 @@ export type Database = {
         }
         Returns: string
       }
+      get_dashboard: { Args: { p_month: string }; Returns: Json }
       save_transaction: {
         Args: {
           p_amount: string
