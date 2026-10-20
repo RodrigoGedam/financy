@@ -47,7 +47,7 @@ export function TransactionsPage() {
 	const trigger = useRef<HTMLButtonElement | null>(null)
 	const newButton = useRef<HTMLButtonElement>(null)
 	const restoreFocus = () =>
-		(trigger.current?.isConnected
+		(trigger.current?.isConnected && trigger.current.getClientRects().length
 			? trigger.current
 			: newButton.current
 		)?.focus()

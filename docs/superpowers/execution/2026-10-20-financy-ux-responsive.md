@@ -24,7 +24,7 @@ Contrato: `../specs/2026-10-20-financy-ux-responsive-design.md`; plano: `../plan
 - T1: implementação local concluída; 15 testes Unicode + 2 testes da API passaram; typecheck passou. RED inicial por módulo ainda ausente; GREEN 17/17. Ensaio de banco ainda depende do Docker. Sem alegar aceite de persistência.
 - T2: implementação local concluída; testes RED da descrição (6 falhas reais) → GREEN; 11/11 focados e typecheck passaram. Fixtures consumidoras atualizadas. Sem prova de persistência ainda.
 - T3: RED geométrico: badge deslocado 16,70 px em 1024; GREEN em 1024/1440 com tolerância 2 px para centro de badge e bordas úteis de valor/ações, botões 44×44. Capturas locais em test-fixtures/ux-responsive (ignorado).
-- T4: pendente.
+- T4: RED para overflow em 320 e toggle de senha de 40px → corrigidos. GREEN: shell/modal em 320×700, 667×375, 390×400; botões/rádios 44, campo inválido conserva texto e recebe foco, Escape restaura foco. Auth em 320 passou. Typecheck/lint passaram. Prova simulada; sem teclado virtual real.
 - T5: pendente.
 
 ## Evidências e pendências
@@ -34,3 +34,4 @@ Resultados novos serão registrados aqui por tarefa. Nenhuma aplicação remota,
 - Docker instalado foi iniciado, mas o endpoint Linux respondeu erro 500; não há banco local pronto comprovado. Não instalar runtime nem contornar com remoto.
 - Ruling: database.types.ts recebeu apenas o delta nullable de description para permitir compilar o frontend local; regeneração pelo schema real continua pendente. Numeric permanece number no tipo gerado e string nas fronteiras financeiras existentes.
 - Ruling: acrescentar suíte Playwright exclusivamente local com domínio reservado `.invalid`, respostas determinísticas e bloqueio de outros destinos; guard remoto original intacto. Isso comprova apresentação, nunca persistência/RLS.
+- T4 corrigiu falha real descoberta no teste: validação onBlur deslocava Salvar antes do mouseup, impedindo o envio; espaço de erro e callback onSubmitInvalid mantêm clique/foco. Resumos usam a grade base empilhada já em T4 para a fundação não transbordar.

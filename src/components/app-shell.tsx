@@ -13,6 +13,6 @@ export function AppShell() {
       <nav aria-label="Navegação principal"><Link to="/" activeOptions={{ exact: true }}>Dashboard</Link><Link to="/transacoes">Transações</Link><Link to="/categorias">Categorias</Link></nav>
       <Link className="avatar" to="/perfil" aria-label="Meu perfil">{initials}</Link>
     </header>
-    <main id="main-content"><Outlet /></main>
+    <main id="main-content" tabIndex={-1}><Outlet /></main>
   </>
 }

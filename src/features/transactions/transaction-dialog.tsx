@@ -36,6 +36,11 @@ export function TransactionDialog({
 	const mutations = useTransactionMutations()
 	const busy = mutations.create.isPending || mutations.update.isPending
 	const form = useForm({
+		onSubmitInvalid: ({ formApi }) => {
+			const fields = [['description', 'tx-description'], ['occurred_on', 'tx-date'], ['amount', 'tx-amount'], ['category_id', 'tx-category']] as const
+			const invalid = fields.find(([name]) => formApi.getFieldMeta(name)?.errors.length)
+			if (invalid) document.getElementById(invalid[1])?.focus()
+		},
 		defaultValues: {
 			description: transaction?.description ?? '',
 			kind: transaction?.kind ?? ('expense' as TransactionKind),
@@ -123,7 +128,7 @@ export function TransactionDialog({
 						aria-busy={busy}
 						onSubmit={(e) => {
 							e.preventDefault()
-							if (!busy) void form.handleSubmit().then(() => document.querySelector<HTMLElement>('.transaction-form [aria-invalid="true"]')?.focus())
+							if (!busy) void form.handleSubmit()
 						}}
 					>
 						<form.Field name="kind">
@@ -188,11 +193,11 @@ export function TransactionDialog({
 										}
 									/>
 									<p id="tx-description-hint" className="field-hint">{countTitleCharacters(field.state.value)}/20 — Até 20 caracteres; emojis compostos podem contar mais de um. Ao editar um título antigo, corrija-o antes de salvar.</p>
-									{field.state.meta.errors.length > 0 && (
+									{(
 										<p
 											id="tx-description-error"
-											className="error"
-											role="alert"
+											className="error field-error"
+											role={field.state.meta.errors.length ? 'alert' : undefined}
 										>
 											{field.state.meta.errors.join(' ')}
 										</p>

@@ -18,6 +18,7 @@ export function CategoryDialog({ category, onClose, restoreFocus }: Props) {
   const initial: CategoryInput = { name: category?.name ?? '', description: category?.description ?? '', color: category?.color ?? 'green', icon: category?.icon ?? 'briefcase-business' }
   const form = useForm({
     defaultValues: initial,
+    onSubmitInvalid: () => nameRef.current?.focus(),
     onSubmit: async ({ value }) => {
       setError('')
       try {
@@ -36,12 +37,12 @@ export function CategoryDialog({ category, onClose, restoreFocus }: Props) {
           <div><Dialog.Title>{category ? 'Editar categoria' : 'Nova categoria'}</Dialog.Title><Dialog.Description>Organize suas transações com categorias</Dialog.Description></div>
           <Dialog.Close asChild><Button className="category-icon-button" variant="outline" aria-label="Fechar" disabled={busy}><X aria-hidden="true" /></Button></Dialog.Close>
         </header>
-        <form className="category-form" noValidate aria-busy={busy} onSubmit={event => { event.preventDefault(); if (!busy) void form.handleSubmit().then(() => document.querySelector<HTMLElement>('.category-form [aria-invalid="true"]')?.focus()) }}>
+        <form className="category-form" noValidate aria-busy={busy} onSubmit={event => { event.preventDefault(); if (!busy) void form.handleSubmit() }}>
           <form.Field name="name" validators={{ onBlur: ({ value }) => { try { normalizeFinancialTitle(value, 'category') } catch (cause) { return (cause as Error).message } }, onSubmit: ({ value }) => { try { normalizeFinancialTitle(value, 'category') } catch (cause) { return (cause as Error).message } } }}>{field => <div className="field">
             <label htmlFor="category-name">Nome</label>
             <Input ref={nameRef} id="category-name" autoComplete="off" placeholder="Ex. Alimentação" value={field.state.value} onChange={event => field.handleChange(event.target.value)} onBlur={field.handleBlur} aria-invalid={!field.state.meta.isValid} aria-describedby={`category-name-hint${field.state.meta.errors.length ? ' category-name-error' : ''}`} disabled={busy} />
             <p id="category-name-hint" className="field-hint">{countTitleCharacters(field.state.value)}/20 — Até 20 caracteres; emojis compostos podem contar mais de um. Ao editar um título antigo, corrija-o antes de salvar.</p>
-            {field.state.meta.errors.length > 0 && <p id="category-name-error" className="error" role="alert">{field.state.meta.errors.join(' ')}</p>}
+            <p id="category-name-error" className="error field-error" role={field.state.meta.errors.length ? 'alert' : undefined}>{field.state.meta.errors.join(' ')}</p>
           </div>}</form.Field>
           <form.Field name="description">{field => <div className="field">
             <label htmlFor="category-description">Descrição</label>

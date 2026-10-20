@@ -17,7 +17,7 @@ export function CategoriesPage() {
   if (query.isSuccess) {
     try { overview = getCategoryOverview(query.data) } catch { overviewError = true }
   }
-  const restoreFocus = () => (trigger.current?.isConnected ? trigger.current : newButton.current)?.focus()
+  const restoreFocus = () => (trigger.current?.isConnected && trigger.current.getClientRects().length ? trigger.current : newButton.current)?.focus()
   return <div className="page-content categories-page">
     <header className="categories-header"><div><h1>Categorias</h1><p>Organize suas transações por categorias</p></div><Button ref={newButton} className="category-new-button" onClick={event => { trigger.current = event.currentTarget; setDialog({ mode: 'create' }) }}><Plus aria-hidden="true" />Nova categoria</Button></header>
     {overview && <section className="dashboard-cards category-overview" aria-label="Resumo das categorias">
