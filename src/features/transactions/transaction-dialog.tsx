@@ -185,7 +185,7 @@ export function TransactionDialog({
 										}
 										disabled={busy}
 										autoComplete="off"
-										placeholder="Ex. Almoço no restaurante"
+										placeholder="Ex. Almoço"
 										required
 										aria-invalid={!field.state.meta.isValid}
 										aria-describedby={

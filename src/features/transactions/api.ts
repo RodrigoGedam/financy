@@ -45,7 +45,8 @@ function failure(error: { code?: string; message?: string }): Error {
 		return new Error(
 			'Categoria indisponível. Atualize a lista e selecione outra categoria.',
 		)
-	if (error.code === '23514' || error.code === '22007')
+	if (error.code === '23514') return new Error('Confira o valor, a data e os campos obrigatórios. Títulos financeiros devem ter até 20 caracteres.')
+	if (error.code === '22007')
 		return new Error('Confira o valor, a data e os campos obrigatórios.')
 	return new Error(
 		'Não foi possível concluir a operação. Verifique a conexão e tente novamente.',

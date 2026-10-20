@@ -2,6 +2,9 @@ import { afterAll, beforeAll, expect, it } from 'vitest'
 import { supabase } from '../../src/lib/supabase'
 import { createCategory, deleteCategory, listCategories, updateCategory } from '../../src/features/categories/api'
 import { categoryInput, createTestClients, rowId, rows, transactionInput, type Fixtures } from '../fixtures/supabase'
+import { listTransactions } from '../../src/features/transactions/api'
+import { parseTransactionSearch } from '../../src/features/transactions/search'
+import { getDashboard } from '../../src/features/dashboard/api'
 
 let f: Fixtures
 beforeAll(async () => {
@@ -64,4 +67,20 @@ it('exclusão continua protegida se uma transação surgir após a leitura inici
   await f.request(f.alice, 'transactions', 'POST', transactionInput(category.id))
   await expect(deleteCategory(category.id)).rejects.toThrow('Reclassifique')
   expect((await listCategories()).find(row => row.id === category.id)?.transaction_count).toBe(1)
+})
+
+it('description persists, reloads and clears through categories, transactions and both dashboard paths', async () => {
+  const input = { name: 'Descrição opcional', description: '  Texto opcional com muito mais de vinte caracteres.  ', color: 'green' as const, icon: 'house' as const }
+  const saved = await createCategory(input)
+  f.track(f.alice, 'categories', saved.id)
+  await f.request(f.alice, 'transactions', 'POST', transactionInput(saved.id))
+  for (const description of [input.description.trim(), 'Outro texto descritivo também maior que vinte', null]) {
+    await updateCategory(saved.id, { ...input, description })
+    expect((await listCategories()).find(c => c.id === saved.id)?.description).toBe(description)
+    const transactions = await listTransactions(parseTransactionSearch({ categoryId: saved.id }))
+    expect(transactions.rows[0].category.description).toBe(description)
+    const dashboard = await getDashboard('2026-01')
+    expect(dashboard.topCategories.find(c => c.id === saved.id)?.description).toBe(description)
+    expect(dashboard.recentTransactions.find(tx => tx.category_id === saved.id)?.category.description).toBe(description)
+  }
 })

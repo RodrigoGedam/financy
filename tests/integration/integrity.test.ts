@@ -85,3 +85,28 @@ it('SDK grava e atualiza decimal textual pela RPC sem contornar RLS', async () =
   expect((await f.alice.rpc('save_transaction', { ...input, p_id: id, p_amount: '1.001' })).error?.code).toBe('23514')
   expect(rows(await f.request(f.alice, 'transactions', 'GET', undefined, id))[0]).toEqual(original)
 })
+
+it('titles enforce code points through direct tables and both transaction RPCs', async () => {
+  for (const length of [19, 20, 21]) {
+    const name = `C${length}${'😀'.repeat(length - 3)}`
+    const result = await f.request(f.alice, 'categories', 'POST', categoryInput(`\u00a0\ufeff${name}\t`))
+    if (length === 21) expect(result.code).toBe('23514')
+    else expect(rows(result)[0].name).toBe(name)
+    const description = '😀'.repeat(length)
+    const direct = await f.request(f.alice, 'transactions', 'POST', { ...transactionInput(categoryId), description })
+    if (length === 21) expect(direct.code).toBe('23514')
+    else expect(rows(direct)[0].description).toBe(description)
+    const rpc = await f.alice.rpc('save_transaction', { p_description: description, p_kind: 'expense', p_amount: '0.01', p_occurred_on: '2024-01-01', p_category_id: categoryId })
+    if (length === 21) expect(rpc.error?.code).toBe('23514')
+    else {
+      expect(rpc.error).toBeNull()
+      if (typeof rpc.data !== 'string') throw new Error('UUID obrigatório.')
+      f.track(f.alice, 'transactions', rpc.data)
+      const p_expected = { description, kind: 'expense', amount: '0.01', occurred_on: '2024-01-01', category_id: categoryId }
+      const args = { p_id: rpc.data, p_expected, p_description: 'x'.repeat(21), p_kind: 'income', p_amount: '9007199254740993.01', p_occurred_on: '2024-01-01', p_category_id: categoryId }
+      expect((await f.alice.rpc('change_transaction', args)).error?.code).toBe('23514')
+      expect((await f.alice.rpc('change_transaction', { ...args, p_description: 'Corrigida' })).error).toBeNull()
+      expect((await f.alice.rpc('change_transaction', { ...args, p_description: 'Concorrente' })).error?.code).toBe('P0001')
+    }
+  }
+})

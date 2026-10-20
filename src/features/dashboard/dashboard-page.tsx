@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import {
 	ChevronRight,
@@ -14,10 +14,16 @@ import { formatDateBr, isValidMonth, todayInSaoPaulo } from '../../lib/dates'
 import { formatBrl } from '../../lib/money'
 import { parseTransactionSearch } from '../transactions/search'
 import { useDashboard } from './queries'
+import type { Transaction } from '../transactions/types'
+import { TransactionDetailsDialog } from '../transactions/transaction-details-dialog'
 
 export function DashboardPage() {
 	const [month, setMonth] = useState(() => todayInSaoPaulo().slice(0, 7))
 	const query = useDashboard(month)
+	const [details, setDetails] = useState<Transaction | null>(null)
+	const trigger = useRef<HTMLButtonElement | null>(null)
+	const monthInput = useRef<HTMLInputElement>(null)
+	const restoreFocus = () => (trigger.current?.isConnected && trigger.current.getClientRects().length ? trigger.current : monthInput.current)?.focus()
 	const period = `${month.slice(5)}/${month.slice(0, 4)}`
 	const search = parseTransactionSearch({ month })
 	return (
@@ -31,6 +37,7 @@ export function DashboardPage() {
 					<label htmlFor="dashboard-month">Mês de referência</label>
 					<Input
 						id="dashboard-month"
+						ref={monthInput}
 						type="month"
 						min="0001-01"
 						max="9999-12"
@@ -153,7 +160,7 @@ export function DashboardPage() {
 													<Icon aria-hidden="true" />
 												</span>
 												<div className="dashboard-recent-description">
-													<h3>{tx.description}</h3>
+													<h3><button type="button" className="transaction-title" aria-label={`Ver detalhes da transação ${tx.description}`} onClick={event => { trigger.current = event.currentTarget; setDetails(tx) }}>{tx.description}</button></h3>
 													<time
 														dateTime={
 															tx.occurred_on
@@ -288,6 +295,7 @@ export function DashboardPage() {
 					</div>
 				</div>
 			)}
+			{details && <TransactionDetailsDialog transaction={details} onClose={() => setDetails(null)} restoreFocus={restoreFocus} />}
 		</div>
 	)
 }

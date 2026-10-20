@@ -188,3 +188,13 @@ Revisão integrada: frames de acesso, categorias, transações, dashboard e moda
 O frame `3103:1987` foi reconsultado com contexto detalhado e screenshot antes da implementação; cartões `3103:2206`, `3103:2218`, `3103:2231`, recentes `3103:2246` e ranking `3103:2350` orientam a composição. Ícones Lucide e tokens existentes foram reaproveitados. Catálogo persistido permanece inalterado.
 
 Adaptações funcionais, distintas do Figma: seletor nativo de mês (inicial atual em São Paulo), período em cada bloco, saldo rotulado Todo o histórico, ranking de despesas com ícone e quantidade de despesas do mês. Em 1024 px, valores/linhas usam espaço vertical adicional para manter a leitura; a 1440 px os recentes e ranking seguem a composição lado a lado. Inspeção e teclado aprovados nas duas larguras, sem rolagem horizontal da página. Estados de novo mês ocultam resultados anteriores; vazio e erro recuperável têm mensagens próprias. [Evidências da implementação](docs/superpowers/execution/2026-10-16-financy-dashboard.md).
+
+## UX responsiva local — 20/10/2026
+
+O contrato atual passa a ser web responsiva mobile-first, preservando desktop, fonte Inter, marca, sete cores, 16 ícones e componentes existentes. As decisões estéticas genéricas de skills não substituem esse contrato. Os resumos restaurados de categorias usam contagens reais de todo o histórico; carregando/erro não exibem zeros inventados. Descrição opcional não reserva um bloco no card quando null.
+
+Gutters de 16/24/32/48 px; navegação em duas linhas até 767 px; cards de categorias em 1/2/3/4 colunas em base/640/1024/1280. Dashboard tem totais em três colunas a partir de 768 e painéis lado a lado a partir de 1280. Recentes usam três faixas no celular e tracks comuns a partir de 768; badge centralizado no próprio track. Ranking usa linha própria para o valor no painel estreito. Transações usam os mesmos rows, células e handlers em cards abaixo de 1024 e tabela semântica acima. Apenas a apresentação visível participa da acessibilidade.
+
+Títulos, badges e valores compactos têm reticências locais; o título abre detalhes integrais de leitura sem fetch. Valores dos totais, ranking, descrição de categoria e detalhes quebram sem alterar o dado. Controles principais e ações têm pelo menos 44×44 px. Modais usam margem de 16 px, altura limitada por dvh, scroll interno e seletores com auto-fit; foco retorna ao disparador visível ou ao botão disponível da página.
+
+As capturas são Chromium com dados determinísticos locais. Layout mobile é uma decisão da especificação, não um frame mobile extraído do Figma. Aparelho real e zoom nativo ainda requerem revisão. [Evidências e limites](docs/superpowers/execution/2026-10-20-financy-ux-responsive.md).

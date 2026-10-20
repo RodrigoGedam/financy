@@ -85,3 +85,11 @@ URLs exatas do Auth, migrations, verificação não destrutiva após deploy e ro
 ## Limitações desta etapa
 
 Sem recuperação de senha ou alteração de e-mail/senha na interface. Cadastro não confirma a propriedade do e-mail, por decisão do escopo. Logout é local e não revoga instantaneamente um JWT emitido. Projetos Supabase Free podem pausar por inatividade. CRUD e isolamento com sessões reais foram testados somente em desenvolvimento; produção recebeu smoke não destrutivo.
+
+## Atualização local de UX — 20/10/2026
+
+A atualização de [UX responsiva](docs/superpowers/specs/2026-10-20-financy-ux-responsive-design.md) acrescenta resumos reais e descrição opcional de categorias, títulos financeiros de até 20 pontos de código, cards de transações no celular e detalhes integrais por teclado/toque. Mantém Inter, catálogo, dinheiro textual, datas de São Paulo e filtros na URL.
+
+`pnpm test:ui:local` verifica apresentação com respostas fictícias, domínio reservado `.invalid` e rede interceptada. Não usa credenciais nem comprova persistência ou RLS. Os guards de `pnpm test:integration` e `pnpm test:e2e` continuam exigindo o desenvolvimento remoto; não executar essas suítes sob autorização exclusivamente local.
+
+As duas novas migrations são arquivos locais e precisam ser verificadas/aplicadas antes de servir o frontend atualizado contra um banco. Nenhum Supabase remoto ou deployment foi alterado nesta atualização. [Arquivos, evidências e pendências](docs/superpowers/execution/2026-10-20-financy-ux-responsive.md).

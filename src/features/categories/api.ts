@@ -17,6 +17,7 @@ function input(value: CategoryInput): CategoryInput {
 }
 function failure(error: { code?: string; message?: string }) {
   if (error.code === '23514' && error.message?.includes('categories_name_length_check')) return new Error('Use até 20 caracteres no nome da categoria.')
+  if (error.code === '23514') return new Error('Confira o nome da categoria (até 20 caracteres), a cor e o ícone.')
   if (error.code === '23505') return new Error('Já existe uma categoria com esse nome.')
   if (error.code === '23503') return new Error('Reclassifique as transações antes de excluir esta categoria.')
   if (error.code === 'PGRST116') return new Error('Categoria indisponível. Atualize a lista e tente novamente.')

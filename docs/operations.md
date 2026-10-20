@@ -110,3 +110,16 @@ Guardar o ID e URL do deployment Production anterior, se houver. Com autorizaç�
 Rollback de frontend não reverte migrations, transações ou configurações do Auth. A recuperação do banco é um procedimento separado, dependente de exportação/restauração validada e autorização para o impacto real. Esta etapa não executou rollback ou recuperação.
 
 Fontes verificadas: [Vercel Vite/SPA](https://vercel.com/docs/frameworks/frontend/vite), [Supabase redirects](https://supabase.com/docs/guides/auth/redirect-urls), [CLI dump](https://supabase.com/docs/reference/cli/supabase-db-dump), [CLI push](https://supabase.com/docs/reference/cli/supabase-db-push). O changelog atual foi consultado; a retirada de cifras TLS legadas a partir de novembro não exige mudar a stack moderna usada nos testes.
+
+## Atualização local de títulos e categorias — 20/10/2026
+
+Nenhuma nova migration foi aplicada a Supabase remoto e nenhum bundle foi publicado. Arquivos gerados pelo CLI fixado 2.121.0, nesta ordem:
+
+1. `20261020165607_financial_titles.sql`: mesmo trim externo do JavaScript no trigger e CHECKs nomeados de 1–20 pontos de código, inicialmente NOT VALID. Validação condicional somente sem violações; nenhuma reescrita de legado.
+2. `20261020165709_category_description.sql`: coluna text nullable, normalização de vazio para null, descrição nos dois objetos de categoria do dashboard e grant estrito INSERT/UPDATE(description) a authenticated, autorizado expressamente para o arquivo local. Sem mudança em RLS, proprietário, identidade, FK ou assinaturas/grants das RPCs.
+
+O frontend novo depende de ambos os contratos. Verificar/aplicar banco antes do frontend em uma futura operação autorizada. Cliente antigo ignora a coluna nova, mas continua sujeito ao CHECK de títulos; rollback de bundle não desfaz esse limite. Conservar coluna/dados e constraints; não truncar títulos nem remover proteções para fabricar fixtures legadas.
+
+Ensaio de legado deve acontecer antes da primeira aplicação em ambiente descartável: semear títulos próprios acima de 20 no schema anterior, aplicar M1, ler texto integral, testar falha de edição parcial, correção com snapshot original e conflito concorrente; depois aplicar M2, conferir descrição/null, grants/RLS com duas contas/anônimo e regenerar tipos. Docker local foi encontrado, mas não forneceu um banco operacional nesta execução. Não substituir esse ensaio por aplicação remota sem nova autorização.
+
+`pnpm test:ui:local` é uma suíte de apresentação com domínio reservado `.invalid` e interceptação completa de respostas. Ela não usa nem relaxa os guards das suítes reais. Tipos receberam somente o delta local da coluna; regeneração a partir de schema, integrações, ensaio de migration e revisão humana seguem registrados como pendências no [registro desta execução](superpowers/execution/2026-10-20-financy-ux-responsive.md).

@@ -32,3 +32,8 @@ it('validates titles and descriptions at the API boundary', async () => {
   mock.response.data = { ...row, description: 123 }
   await expect(createCategory(value)).rejects.toThrow('descrição')
 })
+it('keeps CHECK messages useful when the SDK omits the constraint identity', async () => {
+  mock.response.error = { code: '23514' }
+  await expect(createCategory(value)).rejects.toThrow('20')
+  await expect(createCategory(value)).rejects.toThrow('cor')
+})

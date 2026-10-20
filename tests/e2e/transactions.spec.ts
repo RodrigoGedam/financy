@@ -304,7 +304,7 @@ test('envio único, conflito preserva campos e resposta antiga não substitui no
 				rowId(row),
 			),
 		)[0].description,
-	).toBe('Alterada externamente')
+	).toBe('Alterada externa')
 	await page.keyboard.press('Escape')
 	await expect(edit).not.toBeVisible()
 	await f.request(f.alice, 'transactions', 'DELETE', undefined, rowId(row))

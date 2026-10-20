@@ -31,6 +31,7 @@ import {
 	TransactionDialog,
 } from './transaction-dialog'
 import type { Transaction, TransactionFilters } from './types'
+import { TransactionDetailsDialog } from './transaction-details-dialog'
 
 const route = getRouteApi('/app/transacoes')
 export function TransactionsPage() {
@@ -41,7 +42,7 @@ export function TransactionsPage() {
 	const query = useTransactions(filters)
 	const [dialog, setDialog] = useState<
 		| { mode: 'create' }
-		| { mode: 'edit' | 'delete'; transaction: Transaction }
+		| { mode: 'edit' | 'delete' | 'details'; transaction: Transaction }
 		| null
 	>(null)
 	const trigger = useRef<HTMLButtonElement | null>(null)
@@ -80,7 +81,7 @@ export function TransactionsPage() {
 							>
 								<Icon aria-hidden="true" />
 							</span>
-							<span>{row.original.description}</span>
+							<button type="button" className="transaction-title" aria-label={`Ver detalhes da transação ${row.original.description}`} onClick={event => { trigger.current = event.currentTarget; setDialog({ mode: 'details', transaction: row.original }) }}>{row.original.description}</button>
 						</div>
 					)
 				},
@@ -378,6 +379,7 @@ export function TransactionsPage() {
 							</p>
 						</div>
 					) : (
+						<>
 						<div className="transaction-table-scroll">
 							<table>
 								<thead>
@@ -414,6 +416,15 @@ export function TransactionsPage() {
 								</tbody>
 							</table>
 						</div>
+						<ul className="transaction-mobile-list">
+							{table.getRowModel().rows.map(row => <li key={row.original.id}>
+								<dl>{row.getVisibleCells().map(cell => <div key={cell.id} data-column={cell.column.id}>
+									<dt>{flexRender(cell.column.columnDef.header, table.getFlatHeaders().find(header => header.column.id === cell.column.id)!.getContext())}</dt>
+									<dd>{flexRender(cell.column.columnDef.cell, cell.getContext())}</dd>
+								</div>)}</dl>
+							</li>)}
+						</ul>
+						</>
 					)}
 					<footer className="transaction-pagination">
 						<p role="status">
@@ -473,6 +484,7 @@ export function TransactionsPage() {
 					restoreFocus={restoreFocus}
 				/>
 			)}
+			{dialog?.mode === 'details' && <TransactionDetailsDialog transaction={dialog.transaction} onClose={() => setDialog(null)} restoreFocus={restoreFocus} />}
 			{dialog?.mode === 'edit' && (
 				<TransactionDialog
 					transaction={dialog.transaction}
