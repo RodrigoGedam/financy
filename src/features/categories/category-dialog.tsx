@@ -4,6 +4,7 @@ import { AlertDialog, Dialog } from 'radix-ui'
 import { X } from 'lucide-react'
 import { Button } from '../../components/ui/button'
 import { Input } from '../../components/ui/input'
+import { countTitleCharacters, normalizeFinancialTitle } from '../../lib/financial-text'
 import { categoryColors, categoryIcons, isCategoryColor, isCategoryIcon } from '../../config/category-options'
 import { useCategoryMutations } from './queries'
 import type { Category, CategoryInput } from './types'
@@ -35,10 +36,11 @@ export function CategoryDialog({ category, onClose, restoreFocus }: Props) {
           <div><Dialog.Title>{category ? 'Editar categoria' : 'Nova categoria'}</Dialog.Title><Dialog.Description>Organize suas transações com categorias</Dialog.Description></div>
           <Dialog.Close asChild><Button className="category-icon-button" variant="outline" aria-label="Fechar" disabled={busy}><X aria-hidden="true" /></Button></Dialog.Close>
         </header>
-        <form className="category-form" noValidate aria-busy={busy} onSubmit={event => { event.preventDefault(); void form.handleSubmit() }}>
-          <form.Field name="name" validators={{ onSubmit: ({ value }) => !value.trim() ? 'Informe o nome da categoria.' : undefined }}>{field => <div className="field">
+        <form className="category-form" noValidate aria-busy={busy} onSubmit={event => { event.preventDefault(); if (!busy) void form.handleSubmit().then(() => document.querySelector<HTMLElement>('.category-form [aria-invalid="true"]')?.focus()) }}>
+          <form.Field name="name" validators={{ onBlur: ({ value }) => { try { normalizeFinancialTitle(value, 'category') } catch (cause) { return (cause as Error).message } }, onSubmit: ({ value }) => { try { normalizeFinancialTitle(value, 'category') } catch (cause) { return (cause as Error).message } } }}>{field => <div className="field">
             <label htmlFor="category-name">Nome</label>
-            <Input ref={nameRef} id="category-name" autoComplete="off" placeholder="Ex. Alimentação" value={field.state.value} onChange={event => field.handleChange(event.target.value)} onBlur={field.handleBlur} aria-invalid={!field.state.meta.isValid} aria-describedby={field.state.meta.errors.length ? 'category-name-error' : undefined} disabled={busy} />
+            <Input ref={nameRef} id="category-name" autoComplete="off" placeholder="Ex. Alimentação" value={field.state.value} onChange={event => field.handleChange(event.target.value)} onBlur={field.handleBlur} aria-invalid={!field.state.meta.isValid} aria-describedby={`category-name-hint${field.state.meta.errors.length ? ' category-name-error' : ''}`} disabled={busy} />
+            <p id="category-name-hint" className="field-hint">{countTitleCharacters(field.state.value)}/20 — Até 20 caracteres; emojis compostos podem contar mais de um. Ao editar um título antigo, corrija-o antes de salvar.</p>
             {field.state.meta.errors.length > 0 && <p id="category-name-error" className="error" role="alert">{field.state.meta.errors.join(' ')}</p>}
           </div>}</form.Field>
           <form.Field name="icon">{field => <fieldset className="category-options" disabled={busy}>

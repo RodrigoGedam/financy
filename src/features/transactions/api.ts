@@ -1,6 +1,7 @@
 import { supabase } from '../../lib/supabase'
 import { formatDateBr, monthBounds, todayInSaoPaulo } from '../../lib/dates'
 import { normalizeDecimal } from '../../lib/money'
+import { normalizeFinancialTitle } from '../../lib/financial-text'
 import { isCategoryColor, isCategoryIcon } from '../../config/category-options'
 import type {
 	Transaction,
@@ -28,13 +29,14 @@ export function validateTransactionInput(
 	}
 	if (value.occurred_on > todayInSaoPaulo())
 		throw new Error('A data não pode ser futura.')
-	if (!value.description.trim()) throw new Error('Informe a descrição.')
+	const description = normalizeFinancialTitle(value.description, 'transaction')
 	if (!['income', 'expense'].includes(value.kind))
 		throw new Error('Selecione o tipo.')
 	if (!value.category_id) throw new Error('Selecione uma categoria.')
-	return { ...value, amount, description: value.description.trim() }
+	return { ...value, amount, description }
 }
-function failure(error: { code?: string }): Error {
+function failure(error: { code?: string; message?: string }): Error {
+	if (error.code === '23514' && error.message?.includes('transactions_description_length_check')) return new Error('Use até 20 caracteres na descrição da transação.')
 	if (error.code === 'P0002' || error.code === 'P0001')
 		return new Error(
 			'Transação removida ou alterada em outro contexto. Feche este diálogo e atualize a lista antes de tentar novamente.',

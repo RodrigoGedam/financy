@@ -1,5 +1,6 @@
 import { isCategoryColor, isCategoryIcon } from '../../config/category-options'
 import { supabase } from '../../lib/supabase'
+import { normalizeFinancialTitle } from '../../lib/financial-text'
 import type { Category, CategoryInput, CategorySummary } from './types'
 
 const fields = 'id,name,color,icon'
@@ -8,11 +9,12 @@ function category(row: { id: string; name: string; color: string; icon: string }
   return { id: row.id, name: row.name, color: row.color, icon: row.icon }
 }
 function input(value: CategoryInput): CategoryInput {
-  if (!value.name.trim()) throw new Error('Informe o nome da categoria.')
+  const name = normalizeFinancialTitle(value.name, 'category')
   if (!isCategoryColor(value.color) || !isCategoryIcon(value.icon)) throw new Error('Selecione uma cor e um ícone válidos.')
-  return { ...value, name: value.name.trim() }
+  return { ...value, name }
 }
-function failure(error: { code?: string }) {
+function failure(error: { code?: string; message?: string }) {
+  if (error.code === '23514' && error.message?.includes('categories_name_length_check')) return new Error('Use até 20 caracteres no nome da categoria.')
   if (error.code === '23505') return new Error('Já existe uma categoria com esse nome.')
   if (error.code === '23503') return new Error('Reclassifique as transações antes de excluir esta categoria.')
   if (error.code === 'PGRST116') return new Error('Categoria indisponível. Atualize a lista e tente novamente.')

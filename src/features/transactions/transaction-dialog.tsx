@@ -4,6 +4,7 @@ import { AlertDialog, Dialog } from 'radix-ui'
 import { X } from 'lucide-react'
 import { Button } from '../../components/ui/button'
 import { Input } from '../../components/ui/input'
+import { countTitleCharacters, normalizeFinancialTitle } from '../../lib/financial-text'
 import { formatBrl, parseAmountPtBr } from '../../lib/money'
 import { formatDateBr, todayInSaoPaulo } from '../../lib/dates'
 import type { Category } from '../categories/types'
@@ -122,7 +123,7 @@ export function TransactionDialog({
 						aria-busy={busy}
 						onSubmit={(e) => {
 							e.preventDefault()
-							if (!busy) void form.handleSubmit()
+							if (!busy) void form.handleSubmit().then(() => document.querySelector<HTMLElement>('.transaction-form [aria-invalid="true"]')?.focus())
 						}}
 					>
 						<form.Field name="kind">
@@ -160,10 +161,8 @@ export function TransactionDialog({
 						<form.Field
 							name="description"
 							validators={{
-								onSubmit: ({ value }) =>
-									!value.trim()
-										? 'Informe a descrição.'
-										: undefined,
+								onBlur: ({ value }) => { try { normalizeFinancialTitle(value, 'transaction') } catch (cause) { return (cause as Error).message } },
+								onSubmit: ({ value }) => { try { normalizeFinancialTitle(value, 'transaction') } catch (cause) { return (cause as Error).message } },
 							}}
 						>
 							{(field) => (
@@ -174,6 +173,7 @@ export function TransactionDialog({
 									<Input
 										ref={nameRef}
 										id="tx-description"
+										onBlur={field.handleBlur}
 										value={field.state.value}
 										onChange={(e) =>
 											field.handleChange(e.target.value)
@@ -184,11 +184,10 @@ export function TransactionDialog({
 										required
 										aria-invalid={!field.state.meta.isValid}
 										aria-describedby={
-											field.state.meta.errors.length
-												? 'tx-description-error'
-												: undefined
+											`tx-description-hint${field.state.meta.errors.length ? ' tx-description-error' : ''}`
 										}
 									/>
+									<p id="tx-description-hint" className="field-hint">{countTitleCharacters(field.state.value)}/20 — Até 20 caracteres; emojis compostos podem contar mais de um. Ao editar um título antigo, corrija-o antes de salvar.</p>
 									{field.state.meta.errors.length > 0 && (
 										<p
 											id="tx-description-error"
