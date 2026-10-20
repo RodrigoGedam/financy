@@ -22,7 +22,7 @@ Contrato: `../specs/2026-10-20-financy-ux-responsive-design.md`; plano: `../plan
 ## Progresso
 
 - T1: implementação local concluída; 15 testes Unicode + 2 testes da API passaram; typecheck passou. RED inicial por módulo ainda ausente; GREEN 17/17. Ensaio de banco ainda depende do Docker. Sem alegar aceite de persistência.
-- T2: pendente.
+- T2: implementação local concluída; testes RED da descrição (6 falhas reais) → GREEN; 11/11 focados e typecheck passaram. Fixtures consumidoras atualizadas. Sem prova de persistência ainda.
 - T3: pendente.
 - T4: pendente.
 - T5: pendente.
@@ -30,3 +30,7 @@ Contrato: `../specs/2026-10-20-financy-ux-responsive-design.md`; plano: `../plan
 ## Evidências e pendências
 
 Resultados novos serão registrados aqui por tarefa. Nenhuma aplicação remota, push ou deploy autorizado.
+
+- Docker instalado foi iniciado, mas o endpoint Linux respondeu erro 500; não há banco local pronto comprovado. Não instalar runtime nem contornar com remoto.
+- Ruling: database.types.ts recebeu apenas o delta nullable de description para permitir compilar o frontend local; regeneração pelo schema real continua pendente. Numeric permanece number no tipo gerado e string nas fronteiras financeiras existentes.
+- Ruling: acrescentar suíte Playwright exclusivamente local com domínio reservado `.invalid`, respostas determinísticas e bloqueio de outros destinos; guard remoto original intacto. Isso comprova apresentação, nunca persistência/RLS.

@@ -15,7 +15,7 @@ export function CategoryDialog({ category, onClose, restoreFocus }: Props) {
   const nameRef = useRef<HTMLInputElement>(null)
   const [error, setError] = useState('')
   const mutations = useCategoryMutations()
-  const initial: CategoryInput = { name: category?.name ?? '', color: category?.color ?? 'green', icon: category?.icon ?? 'briefcase-business' }
+  const initial: CategoryInput = { name: category?.name ?? '', description: category?.description ?? '', color: category?.color ?? 'green', icon: category?.icon ?? 'briefcase-business' }
   const form = useForm({
     defaultValues: initial,
     onSubmit: async ({ value }) => {
@@ -42,6 +42,11 @@ export function CategoryDialog({ category, onClose, restoreFocus }: Props) {
             <Input ref={nameRef} id="category-name" autoComplete="off" placeholder="Ex. Alimentação" value={field.state.value} onChange={event => field.handleChange(event.target.value)} onBlur={field.handleBlur} aria-invalid={!field.state.meta.isValid} aria-describedby={`category-name-hint${field.state.meta.errors.length ? ' category-name-error' : ''}`} disabled={busy} />
             <p id="category-name-hint" className="field-hint">{countTitleCharacters(field.state.value)}/20 — Até 20 caracteres; emojis compostos podem contar mais de um. Ao editar um título antigo, corrija-o antes de salvar.</p>
             {field.state.meta.errors.length > 0 && <p id="category-name-error" className="error" role="alert">{field.state.meta.errors.join(' ')}</p>}
+          </div>}</form.Field>
+          <form.Field name="description">{field => <div className="field">
+            <label htmlFor="category-description">Descrição</label>
+            <Input id="category-description" value={field.state.value ?? ''} onChange={event => field.handleChange(event.target.value)} onBlur={field.handleBlur} aria-describedby="category-description-hint" disabled={busy} />
+            <p id="category-description-hint" className="field-hint">Opcional</p>
           </div>}</form.Field>
           <form.Field name="icon">{field => <fieldset className="category-options" disabled={busy}>
             <legend>Ícone</legend>

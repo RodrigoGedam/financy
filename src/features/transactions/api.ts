@@ -60,7 +60,7 @@ export async function listTransactions(
 		let q = supabase
 			.from('transactions')
 			.select(
-				'id,description,kind,amount::text,occurred_on,category_id,created_at,categories(id,name,color,icon)',
+				'id,description,kind,amount::text,occurred_on,category_id,created_at,categories(id,name,description,color,icon)',
 				{ count: 'exact' },
 			)
 		if (filters.q)
@@ -105,6 +105,7 @@ export async function listTransactions(
 		const amount = normalizeDecimal(row.amount)
 		if (
 			!category ||
+			(category.description !== null && typeof category.description !== 'string') ||
 			!isCategoryColor(category.color) ||
 			!isCategoryIcon(category.icon) ||
 			!amount ||

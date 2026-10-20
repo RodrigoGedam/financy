@@ -177,6 +177,7 @@ export async function createTestClients() {
 export type Fixtures = Awaited<ReturnType<typeof createTestClients>>
 export const categoryInput = (name: string) => ({
 	name,
+	description: null,
 	color: 'green',
 	icon: 'utensils',
 })

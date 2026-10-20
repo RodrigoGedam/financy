@@ -16,7 +16,7 @@ afterAll(async () => { await supabase.auth.signOut({ scope: 'local' }); if (f) a
 it('CRUD específico, ordem pt-BR, duplicidade concorrente e isolamento real', async () => {
   expect(await listCategories()).toEqual([])
   const make = async (name: string) => {
-    const row = await createCategory({ name, color: 'blue', icon: 'utensils' })
+    const row = await createCategory({ name, description: null, color: 'blue', icon: 'utensils' })
     f.track(f.alice, 'categories', row.id)
     return row
   }
@@ -30,16 +30,16 @@ it('CRUD específico, ordem pt-BR, duplicidade concorrente e isolamento real', a
   expect(results.filter(result => result.status === 'rejected')).toHaveLength(1)
   const foreign = rowId(rows(await f.request(f.bob, 'categories', 'POST', categoryInput('Somente Bob')))[0])
   expect((await listCategories()).some(row => row.id === foreign)).toBe(false)
-  await expect(updateCategory(foreign, { name: 'Ataque', color: 'green', icon: 'house' })).rejects.toThrow()
+  await expect(updateCategory(foreign, { name: 'Ataque', description: null, color: 'green', icon: 'house' })).rejects.toThrow()
   await expect(deleteCategory(foreign)).rejects.toThrow()
   expect(rows(await f.request(f.bob, 'categories', 'GET', undefined, foreign))[0].name).toBe('Somente Bob')
-  expect(await updateCategory(a.id, { name: 'Bosque', color: 'pink', icon: 'house' })).toMatchObject({ id: a.id, name: 'Bosque', color: 'pink', icon: 'house' })
+  expect(await updateCategory(a.id, { name: 'Bosque', description: null, color: 'pink', icon: 'house' })).toMatchObject({ id: a.id, name: 'Bosque', color: 'pink', icon: 'house' })
   await deleteCategory(z.id)
   expect((await listCategories()).some(row => row.id === z.id)).toBe(false)
 })
 
 it('contagem no banco inclui mais de mil transações de meses/tipos diferentes; vínculo permanece após edição', async () => {
-  const category = await createCategory({ name: 'Histórico completo', color: 'green', icon: 'house' })
+  const category = await createCategory({ name: 'Histórico completo', description: null, color: 'green', icon: 'house' })
   f.track(f.alice, 'categories', category.id)
   const foreign = rowId(rows(await f.request(f.bob, 'categories', 'POST', categoryInput('Histórico de Bob')))[0])
   await f.request(f.bob, 'transactions', 'POST', transactionInput(foreign))
@@ -49,7 +49,7 @@ it('contagem no banco inclui mais de mil transações de meses/tipos diferentes;
   }
   expect((await listCategories()).find(row => row.id === category.id)?.transaction_count).toBe(1005)
   const tx = rows(await f.request(f.alice, 'transactions'))[0]
-  await updateCategory(category.id, { name: 'Casa e família', color: 'orange', icon: 'gift' })
+  await updateCategory(category.id, { name: 'Casa e família', description: null, color: 'orange', icon: 'gift' })
   const linked = await f.alice.from('transactions').select('category_id,categories(name,color,icon)').eq('id', rowId(tx)).single()
   expect(linked.error).toBeNull()
   expect(linked.data?.categories).toMatchObject({ name: 'Casa e família', color: 'orange', icon: 'gift' })
@@ -58,7 +58,7 @@ it('contagem no banco inclui mais de mil transações de meses/tipos diferentes;
 })
 
 it('exclusão continua protegida se uma transação surgir após a leitura inicial', async () => {
-  const category = await createCategory({ name: 'Uso concorrente', color: 'red', icon: 'heart-pulse' })
+  const category = await createCategory({ name: 'Uso concorrente', description: null, color: 'red', icon: 'heart-pulse' })
   f.track(f.alice, 'categories', category.id)
   expect((await listCategories()).find(row => row.id === category.id)?.transaction_count).toBe(0)
   await f.request(f.alice, 'transactions', 'POST', transactionInput(category.id))

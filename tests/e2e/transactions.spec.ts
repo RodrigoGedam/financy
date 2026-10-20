@@ -284,7 +284,7 @@ test('envio único, conflito preserva campos e resposta antiga não substitui no
 				f.alice,
 				'transactions',
 				'PATCH',
-				{ description: 'Alterada externamente' },
+				{ description: 'Alterada externa' },
 				rowId(row),
 			)
 		).status,

@@ -3,15 +3,17 @@ import { supabase } from '../../lib/supabase'
 import { normalizeFinancialTitle } from '../../lib/financial-text'
 import type { Category, CategoryInput, CategorySummary } from './types'
 
-const fields = 'id,name,color,icon'
-function category(row: { id: string; name: string; color: string; icon: string }): Category {
+const fields = 'id,name,description,color,icon'
+function category(row: { id: string; name: string; description: string | null; color: string; icon: string }): Category {
+  if (row.description !== null && typeof row.description !== 'string') throw new Error('Categoria com descrição inválida. Atualize a página.')
   if (!isCategoryColor(row.color) || !isCategoryIcon(row.icon)) throw new Error('Categoria com opção desconhecida. Atualize a página e tente novamente.')
-  return { id: row.id, name: row.name, color: row.color, icon: row.icon }
+  return { id: row.id, name: row.name, description: row.description, color: row.color, icon: row.icon }
 }
 function input(value: CategoryInput): CategoryInput {
   const name = normalizeFinancialTitle(value.name, 'category')
+  if (value.description != null && typeof value.description !== 'string') throw new Error('Descrição da categoria inválida.')
   if (!isCategoryColor(value.color) || !isCategoryIcon(value.icon)) throw new Error('Selecione uma cor e um ícone válidos.')
-  return { ...value, name }
+  return { ...value, name, description: value.description?.trim() || null }
 }
 function failure(error: { code?: string; message?: string }) {
   if (error.code === '23514' && error.message?.includes('categories_name_length_check')) return new Error('Use até 20 caracteres no nome da categoria.')
@@ -24,7 +26,7 @@ export async function listCategories(signal?: AbortSignal): Promise<CategorySumm
   const result: CategorySummary[] = []
   // Paginar categorias evita truncamento pela Data API; transações retornam somente COUNT.
   for (let start = 0; ; start += 500) {
-    let query = supabase.from('categories').select('id,name,color,icon,transactions(count)').order('id').range(start, start + 499)
+    let query = supabase.from('categories').select('id,name,description,color,icon,transactions(count)').order('id').range(start, start + 499)
     if (signal) query = query.abortSignal(signal)
     const { data, error } = await query
     if (error) throw failure(error)

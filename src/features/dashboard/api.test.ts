@@ -7,6 +7,22 @@ const empty = {
 	topCategories: [],
 	recentTransactions: [],
 }
+it('preserves nullable descriptions in both JSON paths and legacy titles', () => {
+  const category = { id: 'cat', name: 'x'.repeat(80), description: 'Descrição opcional integral acima de vinte', color: 'green', icon: 'house' }
+  const tx = { id: 'tx', description: 'y'.repeat(80), kind: 'expense', amount: '9007199254740993.01', occurred_on: '2024-01-01', created_at: '2024-01-01T00:00:00Z', category_id: 'cat', category }
+  for (const description of [null, category.description]) {
+    const linked = { ...category, description }
+    const result = parseDashboard({ ...empty, topCategories: [{ ...linked, amount: '1.00', transaction_count: 1 }], recentTransactions: [{ ...tx, category: linked }] })
+    expect(result.topCategories[0].description).toBe(description)
+    expect(result.recentTransactions[0].category).toEqual(linked)
+    expect(result.recentTransactions[0].description).toBe(tx.description)
+    expect(result.recentTransactions[0].amount).toBe(tx.amount)
+  }
+  for (const description of [undefined, 3, {}]) {
+    expect(() => parseDashboard({ ...empty, topCategories: [{ ...category, description, amount: '1.00', transaction_count: 1 }] })).toThrow()
+    expect(() => parseDashboard({ ...empty, recentTransactions: [{ ...tx, category: { ...category, description } }] })).toThrow()
+  }
+})
 it('preserva decimal textual grande e saldo negativo, normaliza centavos sem arredondar', () => {
 	expect(parseDashboard(empty)).toEqual(empty)
 	expect(
@@ -21,6 +37,7 @@ it('recusa dinheiro numérico ou inválido, resposta truncada e catálogo descon
 	const category = {
 		id: 'abc',
 		name: 'Casa',
+		description: null,
 		color: 'green',
 		icon: 'house',
 		amount: '1.00',

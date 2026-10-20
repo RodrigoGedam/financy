@@ -249,6 +249,7 @@ it('valor maior que inteiro seguro, saldo negativo e categorias atuais após CRU
 	})
 	await updateCategory(categoryId, {
 		name: 'Casa atual',
+		description: null,
 		color: 'pink',
 		icon: 'gift',
 	})

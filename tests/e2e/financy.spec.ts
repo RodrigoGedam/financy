@@ -113,7 +113,7 @@ test('percurso integrado de conta vazia até logout e outra conta, com reclassif
 				'POST',
 				Array.from({ length: 10 }, (_, index) => ({
 					...transactionInput(centsId),
-					description: `Centavo integrado ${index}`,
+					description: `Centavo ${index}`,
 					amount: '0.01',
 					occurred_on: `${month}-01`,
 				})),

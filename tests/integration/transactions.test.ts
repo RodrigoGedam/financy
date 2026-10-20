@@ -31,6 +31,7 @@ beforeAll(async () => {
 	await supabase.auth.setSession(session)
 	const category = await createCategory({
 		name: 'Transações reais',
+		description: null,
 		color: 'blue',
 		icon: 'house',
 	})
@@ -174,6 +175,7 @@ it('CRUD, categoria atual, contagens, conflitos atômicos e isolamento por RLS',
 	})
 	await updateCategory(categoryId, {
 		name: 'Renomeada',
+		description: null,
 		color: 'pink',
 		icon: 'gift',
 	})
