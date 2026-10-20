@@ -384,7 +384,7 @@ export function TransactionsPage() {
 									{table.getHeaderGroups().map((group) => (
 										<tr key={group.id}>
 											{group.headers.map((header) => (
-												<th scope="col" key={header.id}>
+												<th scope="col" key={header.id} data-column={header.column.id}>
 													{flexRender(
 														header.column.columnDef
 															.header,
@@ -401,7 +401,7 @@ export function TransactionsPage() {
 											{row
 												.getVisibleCells()
 												.map((cell) => (
-													<td key={cell.id}>
+													<td key={cell.id} data-column={cell.column.id}>
 														{flexRender(
 															cell.column
 																.columnDef.cell,

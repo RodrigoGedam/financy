@@ -14,7 +14,8 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:integration": "vitest run --config vitest.integration.config.ts",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:ui:local": "playwright test --config playwright.local.config.ts"
   },
   "engines": {
     "node": "^22.13.0 || >=24.0.0"

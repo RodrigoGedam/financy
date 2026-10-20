@@ -8,6 +8,7 @@ Object.assign(process.env, env)
 
 export default defineConfig({
 	testDir: './tests/e2e',
+	testIgnore: 'responsive.spec.ts',
 	fullyParallel: false,
 	workers: 1,
 	use: {

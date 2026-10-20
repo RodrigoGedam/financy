@@ -155,13 +155,17 @@ h1 { font-size: 24px; line-height: 32px; font-weight: 700; }
 .transaction-table-wrap th { height: 56px; text-transform: uppercase; font-size: 12px; font-weight: 500; color: #6b7280; text-align: left; letter-spacing: .02em; }
 .transaction-table-wrap td { min-height: 72px; height: 72px; color: #374151; }
 .transaction-table-wrap th, .transaction-table-wrap td { padding: 12px 16px; border-bottom: 1px solid #e5e7eb; overflow-wrap: anywhere; }
-.transaction-table-wrap th:first-child { width: 29%; }
-.transaction-table-wrap th:nth-child(2) { width: 12%; }
-.transaction-table-wrap th:nth-child(3) { width: 16%; }
-.transaction-table-wrap th:nth-child(4) { width: 12%; }
-.transaction-table-wrap th:nth-child(5) { width: 20%; text-align: right; }
-.transaction-table-wrap th:last-child { width: 11%; }
-.transaction-table-wrap td:nth-child(5) { text-align: right; }
+.transaction-table-wrap th[data-column=description] { width: 24%; }
+.transaction-table-wrap th[data-column=occurred_on] { width: 12%; }
+.transaction-table-wrap th[data-column=category] { width: 16%; }
+.transaction-table-wrap th[data-column=kind] { width: 12%; }
+.transaction-table-wrap th[data-column=amount] { width: calc(36% - 128px); }
+.transaction-table-wrap th[data-column=actions] { width: 128px; }
+.transaction-table-wrap [data-column=occurred_on], .transaction-table-wrap [data-column=category], .transaction-table-wrap [data-column=kind] { text-align: center; }
+.transaction-table-wrap [data-column=amount], .transaction-table-wrap [data-column=actions] { text-align: right; }
+.transaction-table-wrap .category-tag { display: inline-block; vertical-align: middle; }
+.transaction-table-wrap .category-actions { width: fit-content; margin-left: auto; justify-content: flex-end; }
+.transaction-table-wrap .category-icon-button { width: 44px; height: 44px; min-height: 44px; }
 .transaction-description { display: flex; align-items: center; gap: 16px; color: #111827; }
 .transaction-description > span:last-child { min-width: 0; }
 .transaction-amount { font-weight: 600; color: #111827; }
@@ -179,7 +183,7 @@ h1 { font-size: 24px; line-height: 32px; font-weight: 700; }
 .transaction-kind label:last-child input:checked + span { border-color: #16a34a; color: #15803d; }
 .transaction-kind input:focus-visible + span { outline: 3px solid #1f6f43; outline-offset: 3px; }
 .field select:focus-visible { outline: 3px solid #1f6f43; outline-offset: 2px; }
-@media (min-width: 701px) and (max-width: 1150px) { .transaction-table-wrap th, .transaction-table-wrap td { padding-inline: 10px; } .transaction-description { gap: 8px; } .transaction-table-wrap th:first-child { width: 24%; } .transaction-table-wrap th:nth-child(3) { width: 12%; } .transaction-table-wrap th:nth-child(4) { width: 11%; } .transaction-table-wrap th:nth-child(5) { width: 29%; } .transaction-table-wrap th:last-child { width: 12%; } }
+@media (min-width: 701px) and (max-width: 1150px) { .transaction-description { gap: 8px; } }
 @media (max-width: 700px) { .transaction-filters { grid-template-columns: repeat(2,minmax(0,1fr)); } .transaction-table-wrap table { min-width: 880px; } }
 .skip-link:focus { top: 12px; }
 @media (max-width: 700px) { .navbar { padding-inline: 20px; } .navbar nav { gap: 12px; } .page-content { padding: 24px; } }
