@@ -1,10 +1,10 @@
 import { expect, test } from '@playwright/test'
 import { randomUUID } from 'node:crypto'
-import { integrationEnvironment } from '../fixtures/environment'
+import { getFinanceTestEnvironment } from '../fixtures/environment'
 import { recordFixtureUser } from '../fixtures/supabase'
 
 test.beforeEach(() => {
-	integrationEnvironment(process.env)
+	getFinanceTestEnvironment(process.env)
 })
 
 test('Supabase recusa senha de sete caracteres por API direta', async ({
