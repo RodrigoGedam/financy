@@ -15,7 +15,7 @@ Contrato: especificação UX responsiva de 2026-10-20.
 
 - V1 concluído: guard local estrito, seletor sem fallback, configurações separadas, storage key e manifesto por ambiente. RED: duas funções ainda inexistentes; GREEN: 9 testes. Typecheck e lint exit 0. Um timeout de importação sob download Docker passou na repetição, sem alterar limite.
 - V2 concluído: ensaio legado PASS (1 cenário sequencial, 16,89 s, exit 0); aplicação limpa PASS, cinco migrations e ambos os CHECKs `convalidated=true`. Runtime `ca86d7e2-8c88-4764-bfad-e90d6fe2de8d`, projeto `financy-ux-premerge-ca86d7e2`, API/DB `55321/55322`. Início com somente três migrations antigas; portas livres verificadas previamente. Banco/Auth/gateway saudáveis, `start` exit 0 e API autenticada real confirmada pelo ensaio.
-- V3 em execução: geração real de tipos.
+- V3 concluído: CLI 2.121.0 gerou tipos do schema público local (exit 0); stdout temporário validado e formatado antes de substituir o arquivo. Typecheck, 122 testes focados (APIs/dinheiro/datas) e lint passaram.
 - V4 pendente: regressões e verificações de interação.
 - V5 pendente: revisão e entrega com pendências explícitas.
 
@@ -36,3 +36,7 @@ Comando: `pnpm exec vitest run --config vitest.migration.local.config.ts`, com w
 - RLS Alice/Bob/anônimo, grants de descrição e igualdade do catálogo anterior de ACLs/FKs/triggers/policies/segurança de funções confirmados.
 - Cinco versões registradas no histórico. Fixtures removidas e sessões revogadas antes do reset; manifesto contém só IDs técnicos em diretório ignorado.
 - Repetir este ensaio exige novo runtime com apenas três migrations; nunca retirar CHECKs de uma base já migrada para fabricar legado.
+
+## Tipos gerados
+
+`src/lib/database.types.ts` agora vem da geração local real. Schema mantém descrição nullable, opcional em Insert/Update; numeric continua number no gerado e texto exato no domínio. RPCs e FK composta mantidas. O gerador 2.121.0 acrescenta `ComputedFields: never` e não emite o antigo `__InternalSupabase.PostgrestVersion = 14.18`; preservamos a saída real, sem fabricar metadados do ambiente remoto. Formatação via Prettier altera apenas apresentação. Runtime usa imagem Postgres 17.11.0.004/PostgREST v16.4.
