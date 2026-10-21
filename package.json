@@ -15,7 +15,9 @@
     "test": "vitest run",
     "test:integration": "vitest run --config vitest.integration.config.ts",
     "test:e2e": "playwright test",
-    "test:ui:local": "playwright test --config playwright.local.config.ts"
+    "test:ui:local": "playwright test --config playwright.local.config.ts",
+    "test:integration:local": "vitest run --config vitest.integration.local.config.ts",
+    "test:e2e:backend-local": "playwright test --config playwright.backend-local.config.ts"
   },
   "engines": {
     "node": "^22.13.0 || >=24.0.0"

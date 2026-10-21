@@ -82,12 +82,12 @@ test.afterAll(async () => {
 async function login(page: Page) {
 	const session = (await f.alice.auth.getSession()).data.session!
 	await page.addInitScript(
-		(session) =>
+		({session, storageKey}) =>
 			localStorage.setItem(
-				'sb-gorymmpnavtudztnasny-auth-token',
+				storageKey,
 				JSON.stringify(session),
 			),
-		session,
+		{ session, storageKey: f.storageKey },
 	)
 	await page.goto('/')
 	await expect(

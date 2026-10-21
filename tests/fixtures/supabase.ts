@@ -1,14 +1,14 @@
 import { randomUUID } from 'node:crypto'
 import { appendFileSync, mkdirSync } from 'node:fs'
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
-import { integrationEnvironment } from './environment'
+import { getFinanceTestEnvironment } from './environment'
 import type { Database } from '../../src/lib/database.types'
 
 type Table = 'categories' | 'transactions'
 export type ApiResult = { status: number; data: unknown; code: string | null }
 
 export function recordFixtureUser(userId: string, runId: string) {
-	integrationEnvironment(process.env)
+	const { projectRef } = getFinanceTestEnvironment(process.env)
 	const uuid =
 		/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 	if (!uuid.test(userId) || !uuid.test(runId))
@@ -16,7 +16,7 @@ export function recordFixtureUser(userId: string, runId: string) {
 	mkdirSync('test-fixtures', { recursive: true })
 	appendFileSync(
 		'test-fixtures/finance-users.jsonl',
-		JSON.stringify({ runId, projectRef: 'gorymmpnavtudztnasny', userId }) +
+		JSON.stringify({ runId, projectRef, userId }) +
 			'\n',
 	)
 }
@@ -42,7 +42,7 @@ export function rowId(row: Record<string, unknown>) {
 }
 
 export async function createTestClients() {
-	const { url, key } = integrationEnvironment(process.env)
+	const { url, key, storageKey } = getFinanceTestEnvironment(process.env)
 	const runId = randomUUID()
 	const clients: SupabaseClient<Database>[] = []
 	const created: {
@@ -164,6 +164,7 @@ export async function createTestClients() {
 			anon: client(),
 			credentials: { alice: alice.credentials, bob: bob.credentials },
 			runId,
+			storageKey,
 			request,
 			cleanup,
 			track,

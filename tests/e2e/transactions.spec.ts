@@ -43,13 +43,13 @@ test.afterAll(async () => {
 async function login(page: import('@playwright/test').Page) {
 	const session = (await f.alice.auth.getSession()).data.session
 	if (!session) throw new Error('Sessão real obrigatória')
-	await page.addInitScript((session) => {
-		if (!localStorage.getItem('sb-gorymmpnavtudztnasny-auth-token'))
+	await page.addInitScript(({session, storageKey}) => {
+		if (!localStorage.getItem(storageKey))
 			localStorage.setItem(
-				'sb-gorymmpnavtudztnasny-auth-token',
+				storageKey,
 				JSON.stringify(session),
 			)
-	}, session)
+	}, {session, storageKey: f.storageKey})
 	await page.goto('/transacoes')
 	await expect(page.getByText('1 a 10 | 12 resultados')).toBeVisible({
 		timeout: 20_000,

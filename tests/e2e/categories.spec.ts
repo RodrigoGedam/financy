@@ -13,7 +13,7 @@ test.afterAll(async () => {
 test('envio pendente bloqueia repetição até o servidor confirmar', async ({ page }) => {
   const session = (await f.alice.auth.getSession()).data.session
   if (!session) throw new Error('Sessão real obrigatória.')
-  await page.addInitScript(session => localStorage.setItem('sb-gorymmpnavtudztnasny-auth-token', JSON.stringify(session)), session)
+  await page.addInitScript(({session, storageKey}) => localStorage.setItem(storageKey, JSON.stringify(session)), { session, storageKey: f.storageKey })
   await page.goto('/categorias')
   await page.getByRole('button', { name: 'Nova categoria', exact: true }).click()
   const dialog = page.getByRole('dialog', { name: 'Nova categoria' })
@@ -49,7 +49,7 @@ test('categorias reais: vazio, CRUD, vínculo, falhas, teclado e desktop', async
   test.setTimeout(120_000)
   const { data: { session } } = await f.alice.auth.getSession()
   if (!session) throw new Error('Sessão real obrigatória.')
-  const storageKey = 'sb-gorymmpnavtudztnasny-auth-token'
+  const storageKey = f.storageKey
   await page.addInitScript(({ session, storageKey }) => localStorage.setItem(storageKey, JSON.stringify(session)), { session, storageKey })
   const categoryRequests: string[] = []
   const transactionRequests: string[] = []
