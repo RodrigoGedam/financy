@@ -1,3 +1,5 @@
+import { isAbsolute, relative, sep } from 'node:path'
+
 export function integrationEnvironment(env: Record<string, string | undefined>) {
   const ref = 'gorymmpnavtudztnasny'
   if (env.FINANCY_DEV_PROJECT_REF !== ref || env.VITE_SUPABASE_URL !== `https://${ref}.supabase.co`
@@ -32,4 +34,11 @@ export function getFinanceTestEnvironment(env: Record<string, string | undefined
   if (env.FINANCY_TEST_TARGET === 'local') return localIntegrationEnvironment(env)
   if (env.FINANCY_TEST_TARGET || env.FINANCY_LOCAL_PROJECT_ID) throw new Error('Alvo de integração local/remoto ambíguo.')
   return { ...integrationEnvironment(env), projectRef: 'gorymmpnavtudztnasny', storageKey: 'sb-gorymmpnavtudztnasny-auth-token' }
+}
+
+export function assertLocalRuntimeDirectory(root: string, workdir: string) {
+  const child = relative(root, workdir)
+  if (!child || child === '..' || child.startsWith(`..${sep}`) || isAbsolute(child)) {
+    throw new Error('Runtime local não pertence a este ensaio.')
+  }
 }

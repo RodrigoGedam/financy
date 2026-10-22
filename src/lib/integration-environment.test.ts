@@ -1,5 +1,6 @@
+import { dirname, join, resolve } from 'node:path'
 import { expect, it } from 'vitest'
-import { integrationEnvironment, localIntegrationEnvironment, getFinanceTestEnvironment } from '../../tests/fixtures/environment'
+import { integrationEnvironment, localIntegrationEnvironment, getFinanceTestEnvironment, assertLocalRuntimeDirectory } from '../../tests/fixtures/environment'
 
 const valid = {
   FINANCY_DEV_PROJECT_REF: 'gorymmpnavtudztnasny',
@@ -46,4 +47,18 @@ it('seletor não recua de um alvo local inválido para o remoto', () => {
   expect(() => getFinanceTestEnvironment({ ...valid, FINANCY_TEST_TARGET: 'local' })).toThrow('local')
   expect(() => getFinanceTestEnvironment({ ...valid, FINANCY_TEST_TARGET: 'unknown' })).toThrow()
   expect(() => getFinanceTestEnvironment({ ...valid, FINANCY_LOCAL_PROJECT_ID: local.FINANCY_LOCAL_PROJECT_ID })).toThrow()
+})
+
+it('confina o runtime a um descendente real da raiz do ensaio, recusando a pasta pai exata', () => {
+  const root = resolve('test-fixtures/ux-premerge')
+  for (const workdir of [root, dirname(root), dirname(dirname(root)), join(dirname(root), 'another-runtime')]) {
+    expect(() => assertLocalRuntimeDirectory(root, workdir), workdir).toThrow('Runtime local não pertence a este ensaio.')
+  }
+  for (const workdir of [join(root, 'runtime'), join(root, 'runtime', 'nested'), join(root, '..runtime')]) {
+    expect(() => assertLocalRuntimeDirectory(root, workdir), workdir).not.toThrow()
+  }
+  if (process.platform === 'win32') {
+    const otherDrive = root.startsWith('C:') ? 'D:' : 'C:'
+    expect(() => assertLocalRuntimeDirectory(root, `${otherDrive}\\outside-runtime`)).toThrow('Runtime local não pertence a este ensaio.')
+  }
 })

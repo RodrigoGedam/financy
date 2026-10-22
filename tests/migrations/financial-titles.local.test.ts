@@ -1,17 +1,16 @@
 import { execFileSync } from 'node:child_process'
 import { copyFileSync, existsSync, readFileSync, realpathSync } from 'node:fs'
-import { isAbsolute, join, relative, sep } from 'node:path'
+import { isAbsolute, join } from 'node:path'
 import { expect, it } from 'vitest'
-import { localIntegrationEnvironment } from '../fixtures/environment'
+import { assertLocalRuntimeDirectory, localIntegrationEnvironment } from '../fixtures/environment'
 import { createTestClients, rowId, rows, transactionInput } from '../fixtures/supabase'
 
 // Administração exclusivamente do contêiner descartável; operações de usuário usam JWT público real.
 const env = localIntegrationEnvironment(process.env)
 const workdir = realpathSync(process.env.FINANCY_LOCAL_WORKDIR ?? '')
 const root = realpathSync('test-fixtures/ux-premerge')
-const child = relative(root, workdir)
-if (!child || child.startsWith(`..${sep}`) || isAbsolute(child)
-  || !readFileSync(join(workdir, 'supabase/config.toml'), 'utf8').includes(`project_id = "${env.projectRef}"`)
+assertLocalRuntimeDirectory(root, workdir)
+if (!readFileSync(join(workdir, 'supabase/config.toml'), 'utf8').includes(`project_id = "${env.projectRef}"`)
   || existsSync(join(workdir, 'supabase/.temp/project-ref'))) throw new Error('Runtime local não pertence a este ensaio.')
 const container = `supabase_db_${env.projectRef}`
 function sql(query: string) {
