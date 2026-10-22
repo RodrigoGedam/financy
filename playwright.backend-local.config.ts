@@ -18,6 +18,7 @@ export default defineConfig({
   testIgnore: 'responsive.spec.ts',
   fullyParallel: false,
   workers: 1,
+  expect: { timeout: 30_000 },
   use: { baseURL: 'http://127.0.0.1:5173', viewport: { width: 1440, height: 1000 }, trace: 'retain-on-failure' },
   webServer: {
     command: 'pnpm dev --mode validation --port 5173 --strictPort',

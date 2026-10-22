@@ -35,6 +35,9 @@ test('envio pendente bloqueia repetição até o servidor confirmar', async ({ p
     await reached
     await expect(dialog.getByRole('button', { name: 'Salvando…' })).toBeDisabled()
     await expect(dialog.getByLabel('Nome', { exact: true })).toBeDisabled()
+    await expect(dialog.getByRole('button', { name: 'Fechar', exact: true })).toBeDisabled()
+    await page.keyboard.press('Escape')
+    await expect(dialog).toBeVisible()
     await page.keyboard.press('Enter')
     expect(writes).toBe(1)
   } finally { release() }
@@ -72,9 +75,11 @@ test('categorias reais: vazio, CRUD, vínculo, falhas, teclado e desktop', async
   await page.keyboard.press('Escape')
   await expect(newButton).toBeFocused()
 
+  const originalDescription = 'Descrição opcional com mais de vinte caracteres.'
   for (const name of ['Zoológico', '  Árvore  ']) {
     await newButton.click()
     await dialog.getByLabel('Nome', { exact: true }).fill(name)
+    await dialog.getByLabel('Descrição', { exact: true }).fill(originalDescription)
     await dialog.getByRole('radio', { name: 'Talheres', exact: true }).check()
     await dialog.getByRole('radio', { name: 'Azul', exact: true }).check()
     await dialog.getByRole('button', { name: 'Salvar', exact: true }).click()
@@ -103,11 +108,15 @@ test('categorias reais: vazio, CRUD, vínculo, falhas, teclado e desktop', async
   const tx = rows(await f.request(f.alice, 'transactions', 'POST', transactionInput(rowId(category))))[0]
   await page.reload()
   const card = page.getByRole('article', { name: 'Árvore', exact: true })
+  await expect(card.getByText(originalDescription, { exact: true })).toBeVisible()
   await expect(card.getByText('1 transação', { exact: true })).toBeVisible()
   const edit = card.getByRole('button', { name: 'Editar categoria Árvore' })
   await edit.click()
   const editing = page.getByRole('dialog', { name: 'Editar categoria' })
   await expect(editing.getByLabel('Nome', { exact: true })).toHaveValue('Árvore')
+  await expect(editing.getByLabel('Descrição', { exact: true })).toHaveValue(originalDescription)
+  const editedDescription = 'Descrição editada e persistida após recarregar.'
+  await editing.getByLabel('Descrição', { exact: true }).fill(editedDescription)
   await editing.getByLabel('Nome', { exact: true }).fill('Casa')
   await editing.getByRole('radio', { name: 'Rosa', exact: true }).check()
   await editing.getByRole('radio', { name: 'Casa', exact: true }).check()
@@ -116,6 +125,17 @@ test('categorias reais: vazio, CRUD, vínculo, falhas, teclado e desktop', async
   await expect(page.getByRole('button', { name: 'Editar categoria Casa' })).toBeFocused()
   const linked = await f.alice.from('transactions').select('category_id,categories(name,color,icon)').eq('id', rowId(tx)).single()
   expect(linked.data?.categories).toMatchObject({ name: 'Casa', color: 'pink', icon: 'house' })
+
+  await page.reload()
+  const home = page.getByRole('article', { name: 'Casa', exact: true })
+  await expect(home.getByText(editedDescription, { exact: true })).toBeVisible()
+  await home.getByRole('button', { name: 'Editar categoria Casa' }).click()
+  await editing.getByLabel('Descrição', { exact: true }).fill('')
+  await editing.getByRole('button', { name: 'Salvar', exact: true }).click()
+  await expect(editing).not.toBeVisible()
+  await page.reload()
+  await expect(home.getByText(editedDescription, { exact: true })).not.toBeVisible()
+  expect(rows(await f.request(f.alice, 'categories', 'GET', undefined, rowId(category)))[0].description).toBeNull()
 
   await page.getByRole('button', { name: 'Excluir categoria Zoológico' }).click()
   let confirmation = page.getByRole('alertdialog', { name: 'Excluir categoria?' })
@@ -158,7 +178,7 @@ test('categorias reais: vazio, CRUD, vínculo, falhas, teclado e desktop', async
   await page.route('**/rest/v1/categories?**', route => route.abort())
   await page.reload()
   // SDK: 3 retries de GET (1/2/4 s); QueryClient mantém sua política existente.
-  await expect(page.getByRole('alert')).toContainText('Não foi possível carregar as categorias.', { timeout: 25_000 })
+  await expect(page.getByRole('alert')).toContainText('Não foi possível carregar as categorias.', { timeout: process.env.FINANCY_TEST_TARGET === 'local' ? 60_000 : 25_000 })
   await page.unroute('**/rest/v1/categories?**')
   await page.getByRole('button', { name: 'Tentar novamente', exact: true }).click()
   await expect(page.getByRole('article', { name: 'Casa', exact: true })).toBeVisible()

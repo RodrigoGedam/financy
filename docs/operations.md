@@ -123,3 +123,9 @@ O frontend novo depende de ambos os contratos. Verificar/aplicar banco antes do 
 Ensaio de legado deve acontecer antes da primeira aplicação em ambiente descartável: semear títulos próprios acima de 20 no schema anterior, aplicar M1, ler texto integral, testar falha de edição parcial, correção com snapshot original e conflito concorrente; depois aplicar M2, conferir descrição/null, grants/RLS com duas contas/anônimo e regenerar tipos. Docker local foi encontrado, mas não forneceu um banco operacional nesta execução. Não substituir esse ensaio por aplicação remota sem nova autorização.
 
 `pnpm test:ui:local` é uma suíte de apresentação com domínio reservado `.invalid` e interceptação completa de respostas. Ela não usa nem relaxa os guards das suítes reais. Tipos receberam somente o delta local da coluna; regeneração a partir de schema, integrações, ensaio de migration e revisão humana seguem registrados como pendências no [registro desta execução](superpowers/execution/2026-10-20-financy-ux-responsive.md).
+
+## Validação local pré-merge — 22/10/2026
+
+O estado pendente descrito em 20/10 acima é histórico. O ensaio legado e a aplicação limpa foram concluídos em Supabase descartável local; os tipos foram regenerados pelo CLI 2.121.0 a partir do schema local. Os logs confirmam 21 testes de integração e 15 E2E de backend aprovados. Na rodada final de 22/10, 190 testes unitários e 12 responsivos passaram; build e lint também passaram. O P2 do confinamento do runtime foi corrigido com regressão sem escrita em banco.
+
+O usuário aprovou as mudanças visuais. Aparelho físico e percentuais específicos de zoom nativo continuam sem comprovação. Não há autorização de merge, push, publicação ou aplicação remota nesta etapa. A ordem banco antes de frontend continua necessária em uma futura operação autorizada. Evidências e limites no [registro pré-merge](superpowers/execution/2026-10-21-financy-pre-merge-validation.md).

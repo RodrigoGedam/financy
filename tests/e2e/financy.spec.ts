@@ -244,7 +244,7 @@ test('percurso integrado de conta vazia até logout e outra conta, com reclassif
 	await expect(
 		page.getByRole('heading', { name: 'Revisão integrada', exact: true }),
 	).toHaveCount(0)
-	await expect(page.getByText('11 transações', { exact: true })).toBeVisible()
+	await expect(page.getByRole('region', { name: 'Resumo das categorias' }).getByText('11 transações', { exact: true })).toBeVisible()
 	await page.getByRole('link', { name: 'Dashboard', exact: true }).click()
 	await expect(
 		page.getByRole('region', { name: 'Saldo total' }),
