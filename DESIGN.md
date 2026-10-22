@@ -198,3 +198,7 @@ Gutters de 16/24/32/48 px; navegação em duas linhas até 767 px; cards de cate
 Títulos, badges e valores compactos têm reticências locais; o título abre detalhes integrais de leitura sem fetch. Valores dos totais, ranking, descrição de categoria e detalhes quebram sem alterar o dado. Controles principais e ações têm pelo menos 44×44 px. Modais usam margem de 16 px, altura limitada por dvh, scroll interno e seletores com auto-fit; foco retorna ao disparador visível ou ao botão disponível da página.
 
 As capturas são Chromium com dados determinísticos locais. Layout mobile é uma decisão da especificação, não um frame mobile extraído do Figma. Aparelho real e zoom nativo ainda requerem revisão. [Evidências e limites](docs/superpowers/execution/2026-10-20-financy-ux-responsive.md).
+
+## Refinamento mobile — 22/10/2026
+
+Ajuste solicitado após revisão humana em emulação mobile. Os alinhamentos de colunas ficam restritos à tabela desktop. Nos cartões de transações, data/categoria e tipo/valor compartilham linhas; ações ficam em um rodapé horizontal com alvos de 44 px, preservando labels e acesso ao detalhe integral. Nas transações recentes do dashboard, categoria e valor compartilham a última linha e a coluna monetária recebe mais espaço. Abaixo de 768 px, ícone/categoria, quantidade e valor do ranking de maiores despesas ficam centralizados; o arranjo desktop anterior permanece a partir de 768 px. Sem alteração de tokens, dados ou handlers.

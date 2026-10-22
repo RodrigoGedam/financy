@@ -269,3 +269,67 @@ for (const state of ['empty', 'error', 'delayed'] as const) {
     await noOverflow(page)
   })
 }
+
+test('mobile transaction cards keep related fields together', async ({ page }) => {
+  await mockFinance(page)
+  await page.goto('/transacoes')
+  for (const width of [320, 375, 390, 768]) {
+    await page.setViewportSize({ width, height: 1000 })
+    await expect(page.locator('.transaction-mobile-list > li')).toHaveCount(2)
+    const cards = await page.locator('.transaction-mobile-list > li').evaluateAll(items => items.map(item => {
+      const field = (name: string) => item.querySelector<HTMLElement>(`[data-column=${name}]`)!
+      const actions = field('actions')
+      const label = actions.querySelector('dt')!.getBoundingClientRect()
+      const buttons = actions.querySelector('dd')!.getBoundingClientRect()
+      return {
+        paired: Math.abs(field('kind').getBoundingClientRect().y - field('amount').getBoundingClientRect().y),
+        aligned: ['occurred_on', 'category', 'kind'].every(name => getComputedStyle(field(name)).textAlign === 'left'),
+        footer: Math.abs(label.y + label.height / 2 - buttons.y - buttons.height / 2),
+        height: item.getBoundingClientRect().height,
+        touch: [...actions.querySelectorAll('button')].every(button => button.getBoundingClientRect().width >= 44 && button.getBoundingClientRect().height >= 44),
+      }
+    }))
+    for (const card of cards) {
+      expect.soft(card.paired, `tipo e valor em ${width}px`).toBeLessThanOrEqual(1)
+      expect.soft(card.aligned, `alinhamento em ${width}px`).toBe(true)
+      expect.soft(card.footer, `ações em ${width}px`).toBeLessThanOrEqual(1)
+      expect.soft(card.height, `altura em ${width}px`).toBeLessThanOrEqual(300)
+      expect(card.touch).toBe(true)
+    }
+    await noOverflow(page)
+    if (width === 390) {
+      mkdirSync(evidence, { recursive: true })
+      await page.locator('.transaction-mobile-list').screenshot({ path: `${evidence}/mobile-fix-transactions-390.png` })
+    }
+  }
+})
+
+test('mobile dashboard centers category summaries and groups recent metadata', async ({ page }) => {
+  await mockFinance(page)
+  await page.goto('/')
+  for (const width of [320, 375, 390]) {
+    await page.setViewportSize({ width, height: 1000 })
+    await expect(page.locator('.dashboard-ranking li')).toHaveCount(2)
+    const centers = await page.locator('.dashboard-ranking li').evaluateAll(items => items.flatMap(item => {
+      const row = item.getBoundingClientRect()
+      return [...item.children].map(child => {
+        const box = child.getBoundingClientRect()
+        return Math.abs(box.x + box.width / 2 - row.x - row.width / 2)
+      })
+    }))
+    expect.soft(centers.every(delta => delta <= 2), `categorias centralizadas em ${width}px`).toBe(true)
+    const recent = await page.locator('.dashboard-recent li').evaluateAll(items => items.map(item => {
+      const category = item.querySelector('.category-tag')!.getBoundingClientRect()
+      const amount = item.querySelector('.dashboard-recent-amount')!.getBoundingClientRect()
+      return Math.abs(category.y + category.height / 2 - amount.y - amount.height / 2)
+    }))
+    expect.soft(recent.every(delta => delta <= 2), `metadados juntos em ${width}px`).toBe(true)
+    const shortAmountFits = await page.locator('.dashboard-recent-amount strong').last().evaluate(element => element.scrollWidth <= element.clientWidth)
+    expect.soft(shortAmountFits, `valor curto integral em ${width}px`).toBe(true)
+    await noOverflow(page)
+    if (width === 390) {
+      mkdirSync(evidence, { recursive: true })
+      await page.locator('.dashboard-panels').screenshot({ path: `${evidence}/mobile-fix-dashboard-390.png` })
+    }
+  }
+})
