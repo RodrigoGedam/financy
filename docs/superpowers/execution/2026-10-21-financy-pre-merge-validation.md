@@ -5,19 +5,19 @@ Contrato: especificação UX responsiva de 2026-10-20.
 
 ## Identidade e limites
 
-- Worktree `financy-ux-responsive`, branch `codex/financy-ux-responsive`.
+- Implementação no worktree `financy-ux-responsive`, branch `codex/financy-ux-responsive`; integrado em main e worktree arquivado de forma recuperável em 23/10.
 - Base local e remota em 2026-10-21: `359a1857ad37e87c576fd03a71d85af03984a776`.
 - Início: `8d2b1ecb0eb8b7cf5b81d593daa20ee201166456`.
 - Docker cliente/servidor 29.8.0 respondeu com sucesso.
-- Somente recursos descartáveis locais desta execução; sem Supabase remoto, push, publicação ou merge.
+- Recursos descartáveis locais; merge local autorizado concluído em 23/10. Sem alteração em Supabase remoto, push ou publicação.
 
 ## Ledger
 
 - V1 concluído: guard local estrito, seletor sem fallback, configurações separadas, storage key e manifesto por ambiente. RED: duas funções ainda inexistentes; GREEN: 9 testes. Typecheck e lint exit 0. Um timeout de importação sob download Docker passou na repetição, sem alterar limite.
 - V2 concluído: ensaio legado PASS (1 cenário sequencial, 16,89 s, exit 0); aplicação limpa PASS, cinco migrations e ambos os CHECKs `convalidated=true`. Runtime `ca86d7e2-8c88-4764-bfad-e90d6fe2de8d`, projeto `financy-ux-premerge-ca86d7e2`, API/DB `55321/55322`. Início com somente três migrations antigas; portas livres verificadas previamente. Banco/Auth/gateway saudáveis, `start` exit 0 e API autenticada real confirmada pelo ensaio.
 - V3 concluído: CLI 2.121.0 gerou tipos do schema público local (exit 0); stdout temporário validado e formatado antes de substituir o arquivo. Typecheck, 122 testes focados (APIs/dinheiro/datas) e lint passaram.
-- V4 automação concluída: 190 unitários e 12 responsivos PASS na rodada final de 22/10, sem build concorrente; build/typecheck e lint PASS. Os logs do ensaio anterior confirmam 21 integrações e 15 E2E backend PASS. Aceite visual humano registrado; aparelho físico e percentuais específicos de zoom nativo não foram comprovados. As falhas iniciais e as repetições permanecem no histórico abaixo.
-- V5 concluído: P2 corrigido, commits locais registrados, origin/main reconferida e revisão independente da branch completa sem novos achados de código. A simulação do checkout principal identificou documentos untracked que impedem o futuro merge; backup verificado preserva os originais. Aparelho físico e zoom nativo específico continuam sem comprovação. Nenhum merge foi executado.
+- V4 automação concluída: 190 unitários e 12 responsivos PASS na rodada final de 22/10, sem build concorrente; build/typecheck e lint PASS. Os logs do ensaio anterior confirmam 21 integrações e 15 E2E backend PASS. Aceite visual humano registrado; zoom nativo 200%/400% confirmado em 23/10, aparelho físico não testado. As falhas iniciais e as repetições permanecem no histórico abaixo.
+- V5 concluído e integrado em main em 23/10: P2 corrigido, revisão independente sem novos achados, documentos duplicados preservados e merge local fast-forward realizado. Resultado em main: 190 unitários, 12 responsivos, build e lint PASS. Zoom nativo 200%/400% verificado automaticamente no Edge; aparelho físico permanece não testado. Sem push, deploy ou alterações no Supabase remoto.
 
 Ruling: usar este registro versionado como ledger em Windows, como na execução anterior — facilita revisão e continuidade sem depender de scripts Bash.
 
@@ -88,3 +88,14 @@ O usuário aprovou as mudanças visuais após testar o CSS e solicitou o encerra
 - Capturas de confirmação PASS (1 cenário, 24,4 s), inspecionadas: verified-200-dashboard.png, verified-400-transactions.png e verified-400-dashboard.png. A exportação padrão do Playwright recortava a imagem em zoom nativo; as capturas verified-* corrigem apenas a escala de exportação, com largura PNG conferida contra o viewport CSS. Nenhum CSS do produto foi alterado.
 - Evidências ignoradas em test-fixtures/ux-premerge/wcag-merge-2026-10-23/: wcag-zoom.spec.ts, wcag-zoom.config.ts, metrics.json, zoom-final.log, capture.log e verified-*.png. As tentativas de preparação anteriores não contam como PASS: preferência antiga não aplicada, interação aguardando coordenadas interrompida e expectativa incorreta de um Cancelar inexistente, corrigida para Fechar. Nenhuma dessas tentativas motivou mudança no produto.
 - pnpm test pré-merge PASS: 190/190 em 13 arquivos. Revisão independente anterior continua válida para o código; desde 75a01fd esta etapa acrescenta somente registro documental e artefatos ignorados de verificação. Aparelho físico permanece não testado; o comportamento de zoom 200%/400% agora possui evidência automatizada do navegador.
+
+### Merge concluído e verificado em main — 23/10/2026
+
+- Reconferidos antes da integração: origin/main e main em 359a1857ad37e87c576fd03a71d85af03984a776, sem alterações rastreadas/index. Candidata 993d10d3aaab017bd07019265c7b90a61d1f4aa2, contendo somente registro documental adicional após o código revisado e testado.
+- Dois documentos originais novamente comparados aos blobs da candidata, movidos com paths absolutos conferidos para test-fixtures/ux-premerge/main-documents-2026-10-23/docs/superpowers/{plans,specs}/ e verificados por SHA256. Os outros dois documentos do usuário em docs/ permanecem intactos e não rastreados. Nenhum documento foi descartado ou sobrescrito silenciosamente.
+- Simulação do checkout PASS após preservar duplicatas. git merge --ff-only 993d10d3aaab017bd07019265c7b90a61d1f4aa2 PASS: main avançou de 359a185 para 993d10d sem conflito ou commit artificial de merge.
+- Verificações executadas novamente no checkout main e em sequência: pnpm test (190/190, 13 arquivos), pnpm test:ui:local (12/12, 1,2 min), pnpm build (tsc -b e Vite, exit 0), pnpm lint (exit 0) e git diff --check PASS. Build não concorreu com os responsivos. Logs em test-fixtures/ux-premerge/merge-validation-2026-10-23/{unit,responsive,build,lint}.log.
+- Verificação de zoom nativo anterior ao merge passou na mesma versão de código, conforme seção WCAG acima. Não foram reaplicadas migrations nem repetidos testes de escrita em banco nesta integração; os resultados locais de legado/integração/backend permanecem históricos.
+- Antes de arquivar o worktree, 107 arquivos locais necessários (2,66 MB) foram copiados e verificados por hash em .superpowers/archives/financy-ux-responsive-2026-10-23/, com manifest.json. Incluem evidências de test-fixtures, resultados, configuração local .env.validation.local e metadados locais Supabase. Cache de perfis descartáveis do navegador, node_modules e dist não foram preservados. As evidências antigas passam a estar nesse arquivo local com seus caminhos relativos originais.
+- Worktree arquivado com a ferramenta nativa e confirmado como archived_worktree; snapshot recuperável disponível no chat. A branch de desenvolvimento inteiramente integrada foi removida. main permanece como checkout ativo. Servidor web encerrado.
+- Este commit final altera somente documentação de encerramento; não muda o produto já verificado em 993d10d. Integração local concluída, sem push, deploy ou alteração remota. Aparelho físico e auditoria completa de todos os critérios WCAG ficam fora da evidência desta rodada; o teste de zoom é focado em 1.4.4/1.4.10.

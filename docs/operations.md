@@ -133,3 +133,7 @@ O usuário aprovou as mudanças visuais. Aparelho físico e percentuais específ
 ## Autorização de integração local — 23/10/2026
 
 O usuário autorizou o merge local em main e a resolução dos documentos duplicados. A verificação focada em WCAG 1.4.4/1.4.10 confirmou zoom nativo de 200% e 400% no Edge com dados de apresentação e perfis descartáveis. Isso não autoriza push, publicação ou aplicação remota de migrations. O registro pré-merge contém método, medidas e limites; aparelho físico continua sem validação.
+
+### Resultado da integração local
+
+Merge fast-forward concluído em main em 23/10/2026, integrando 993d10d após preservar os dois documentos duplicados em backup verificado. Unitários (190), responsivos (12), build e lint passaram novamente no checkout main; zoom nativo 200%/400% foi confirmado em perfis isolados do Edge. O worktree foi arquivado de forma recuperável, com evidências e configuração local preservadas em .superpowers/archives/financy-ux-responsive-2026-10-23/. Nenhum push, deploy ou aplicação remota de migrations foi executado. Aparelho físico e auditoria WCAG completa continuam sem comprovação.
