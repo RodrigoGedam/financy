@@ -202,3 +202,7 @@ As capturas são Chromium com dados determinísticos locais. Layout mobile é um
 ## Refinamento mobile — 22/10/2026
 
 Ajuste solicitado após revisão humana em emulação mobile. Os alinhamentos de colunas ficam restritos à tabela desktop. Nos cartões de transações, data/categoria e tipo/valor compartilham linhas; ações ficam em um rodapé horizontal com alvos de 44 px, preservando labels e acesso ao detalhe integral. Nas transações recentes do dashboard, categoria e valor compartilham a última linha e a coluna monetária recebe mais espaço. Abaixo de 768 px, ícone/categoria, quantidade e valor do ranking de maiores despesas ficam centralizados; o arranjo desktop anterior permanece a partir de 768 px. Sem alteração de tokens, dados ou handlers.
+
+## Zoom e acessibilidade — 23/10/2026
+
+WCAG 1.4.4 e 1.4.10 são referências para redimensionamento e reflow. A verificação de zoom nativo do Edge em perfis isolados confirmou 200% e 400% (viewport de 314 pixels CSS a 400%), com dados locais interceptados, conteúdo integral disponível nos detalhes, controles dos modais alcançáveis por rolagem e foco preservado. A troca para cards em zoom alto é intencional. Não limitar o zoom nem usar CSS zoom para forçar a aparência desktop. Esse teste não equivale a uma auditoria WCAG completa ou uso em aparelho físico; evidências no registro pré-merge.

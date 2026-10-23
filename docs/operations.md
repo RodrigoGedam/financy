@@ -129,3 +129,7 @@ Ensaio de legado deve acontecer antes da primeira aplicação em ambiente descar
 O estado pendente descrito em 20/10 acima é histórico. O ensaio legado e a aplicação limpa foram concluídos em Supabase descartável local; os tipos foram regenerados pelo CLI 2.121.0 a partir do schema local. Os logs confirmam 21 testes de integração e 15 E2E de backend aprovados. Na rodada final de 22/10, 190 testes unitários e 12 responsivos passaram; build e lint também passaram. O P2 do confinamento do runtime foi corrigido com regressão sem escrita em banco.
 
 O usuário aprovou as mudanças visuais. Aparelho físico e percentuais específicos de zoom nativo continuam sem comprovação. Não há autorização de merge, push, publicação ou aplicação remota nesta etapa. A ordem banco antes de frontend continua necessária em uma futura operação autorizada. Evidências e limites no [registro pré-merge](superpowers/execution/2026-10-21-financy-pre-merge-validation.md).
+
+## Autorização de integração local — 23/10/2026
+
+O usuário autorizou o merge local em main e a resolução dos documentos duplicados. A verificação focada em WCAG 1.4.4/1.4.10 confirmou zoom nativo de 200% e 400% no Edge com dados de apresentação e perfis descartáveis. Isso não autoriza push, publicação ou aplicação remota de migrations. O registro pré-merge contém método, medidas e limites; aparelho físico continua sem validação.
