@@ -7,4 +7,12 @@ import { queryClient } from './lib/query-client'
 import { router } from './router'
 import './styles.css'
 
-createRoot(document.getElementById('root')!).render(<StrictMode><QueryClientProvider client={queryClient}><AuthProvider><RouterProvider router={router} /></AuthProvider></QueryClientProvider></StrictMode>)
+createRoot(document.getElementById('root')!).render(
+	<StrictMode>
+		<QueryClientProvider client={queryClient}>
+			<AuthProvider>
+				<RouterProvider router={router} />
+			</AuthProvider>
+		</QueryClientProvider>
+	</StrictMode>,
+)

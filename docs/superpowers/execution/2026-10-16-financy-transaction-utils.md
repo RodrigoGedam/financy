@@ -18,13 +18,13 @@ Testes escritos antes da implementação. Primeiro foram expostas as assinaturas
 
 Implementação mínima passou inicialmente nos 144 casos. Um teste adicional revelou que Intl sem era poderia exibir um ano anterior à era comum como ano positivo: RED com uma falha (38 casos pulados não contados como aprovados), corrigido pela validação explícita da era.
 
-| Verificação executada | Resultado |
-| --- | --- |
-| `node node_modules/vitest/vitest.mjs run --reporter=dot` (mesma suíte de `pnpm test`) | **148/148** passaram em seis arquivos; 145 casos novos e três existentes |
-| Mesmo runner, somente `src/lib/dates.test.ts`, processo filho com `TZ=UTC` | **39/39** passaram; referência São Paulo e datas civis independem do fuso padrão do processo |
-| `pnpm typecheck` | Exit 0 |
-| `pnpm lint` | Exit 0 |
-| Prettier instalado, `--check` somente nos sete arquivos TypeScript novos | Passou; configuração local de tabs preservada |
+| Verificação executada                                                                 | Resultado                                                                                    |
+| ------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `node node_modules/vitest/vitest.mjs run --reporter=dot` (mesma suíte de `pnpm test`) | **148/148** passaram em seis arquivos; 145 casos novos e três existentes                     |
+| Mesmo runner, somente `src/lib/dates.test.ts`, processo filho com `TZ=UTC`            | **39/39** passaram; referência São Paulo e datas civis independem do fuso padrão do processo |
+| `pnpm typecheck`                                                                      | Exit 0                                                                                       |
+| `pnpm lint`                                                                           | Exit 0                                                                                       |
+| Prettier instalado, `--check` somente nos sete arquivos TypeScript novos              | Passou; configuração local de tabs preservada                                                |
 
 Cobertos centavos, saldo negativo, zero negativo, `1`/`1.2`, valor `9007199254740993.01` e valores de 30 dígitos, agrupamento brasileiro inválido, excesso de casas e expoentes. Dinheiro é transformado por texto; BigInt aparece somente nas unidades para agrupamento da exibição. Não há soma/aritmética financeira no JavaScript.
 

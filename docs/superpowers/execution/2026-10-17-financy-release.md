@@ -10,26 +10,26 @@ Deployment `dpl_FqsuTixC94vVFBN1CYE7UbB9khke` reconferido READY, aliases canôni
 
 ## Execução autorizada em 17/10/2026 — frontend publicado, pendências registradas
 
-| Resultado atual | Evidência |
-| --- | --- |
-| Commit do código publicado | `abcff9eca763fc6a64e1880e3a76a58f9e3a5849`, main local; arquivos preservados após anonimização |
-| GitHub | `https://github.com/RodrigoGedam/financy`, público e criado; push recusado por falta de credencial local (não por conteúdo). `gh api user` indica login necessário; usuário foi orientado a `gh auth login` e `gh auth setup-git`, sem compartilhar tokens |
-| Vercel | `financy`, `prj_KwAs12YJXoldXBQErlBQd5QM9QG1`, escopo `team_GEBnCB8faol74Ab23BukVkI5` |
-| Deployment | `dpl_FqsuTixC94vVFBN1CYE7UbB9khke`, target production, **READY** confirmado pelo get_deployment |
-| URL canônica | `https://financy-gules.vercel.app` |
-| URL específica | `https://financy-bbg2tveqz-rodrigogedams-projects.vercel.app` |
-| Alias adicional confirmado | `https://financy-rodrigogedams-projects.vercel.app` |
-| Origem do deployment | 85 arquivos extraídos de git show do commit acima, base64, filtrados pelas exclusões preparadas; envio MCP direto, sem usar credenciais Git nem arquivos .env/artefatos locais |
-| Variáveis | Development/Preview → dev; Production → prod; somente as duas publicáveis, Node 24 |
-| Auth | Site URL canônica salva no painel e persistida após reload; sem redirects extras ou curingas |
+| Resultado atual            | Evidência                                                                                                                                                                                                                                                  |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Commit do código publicado | `abcff9eca763fc6a64e1880e3a76a58f9e3a5849`, main local; arquivos preservados após anonimização                                                                                                                                                             |
+| GitHub                     | `https://github.com/RodrigoGedam/financy`, público e criado; push recusado por falta de credencial local (não por conteúdo). `gh api user` indica login necessário; usuário foi orientado a `gh auth login` e `gh auth setup-git`, sem compartilhar tokens |
+| Vercel                     | `financy`, `prj_KwAs12YJXoldXBQErlBQd5QM9QG1`, escopo `team_GEBnCB8faol74Ab23BukVkI5`                                                                                                                                                                      |
+| Deployment                 | `dpl_FqsuTixC94vVFBN1CYE7UbB9khke`, target production, **READY** confirmado pelo get_deployment                                                                                                                                                            |
+| URL canônica               | `https://financy-gules.vercel.app`                                                                                                                                                                                                                         |
+| URL específica             | `https://financy-bbg2tveqz-rodrigogedams-projects.vercel.app`                                                                                                                                                                                              |
+| Alias adicional confirmado | `https://financy-rodrigogedams-projects.vercel.app`                                                                                                                                                                                                        |
+| Origem do deployment       | 85 arquivos extraídos de git show do commit acima, base64, filtrados pelas exclusões preparadas; envio MCP direto, sem usar credenciais Git nem arquivos .env/artefatos locais                                                                             |
+| Variáveis                  | Development/Preview → dev; Production → prod; somente as duas publicáveis, Node 24                                                                                                                                                                         |
+| Auth                       | Site URL canônica salva no painel e persistida após reload; sem redirects extras ou curingas                                                                                                                                                               |
 
 SQL das três migrations aplicado uma única vez em produção e comparado aos arquivos aprovados, sem divergência após normalizar finais de linha/whitespace externo. RLS confirmado nas duas tabelas, oito políticas; save_transaction/change_transaction/get_dashboard são invoker, search_path vazio, anon sem EXECUTE e authenticated com EXECUTE. Advisor de segurança retornou zero lints nessa consulta. Nenhum dado/usuário fictício inserido em produção; nenhuma suíte de escrita executada lá.
 
-| Arquivo/version local | Versão registrada pelo MCP em produção | Situação |
-| --- | --- | --- |
-| `20261015182208_financy_core.sql` | `20261017175510` | Schema aplicado e SQL conferido; metadado pendente |
-| `20261016183142_financy_transaction_conflicts.sql` | `20261017175607` | Aplicado e SQL conferido; metadado pendente |
-| `20261016190434_financy_dashboard.sql` | `20261017175641` | Aplicado e SQL conferido; metadado pendente |
+| Arquivo/version local                              | Versão registrada pelo MCP em produção | Situação                                           |
+| -------------------------------------------------- | -------------------------------------- | -------------------------------------------------- |
+| `20261015182208_financy_core.sql`                  | `20261017175510`                       | Schema aplicado e SQL conferido; metadado pendente |
+| `20261016183142_financy_transaction_conflicts.sql` | `20261017175607`                       | Aplicado e SQL conferido; metadado pendente        |
+| `20261016190434_financy_dashboard.sql`             | `20261017175641`                       | Aplicado e SQL conferido; metadado pendente        |
 
 A revisão automática recusou o UPDATE da primeira versão interna: motivo informado, alteração de registro interno em produção exige autorização específica. A operação **não ocorreu**. Foi solicitada uma única autorização específica para os três pares acima; até a resposta não se tentou repair via CLI, outro UPDATE ou workaround. Não rodar db push ou reaplicar: o banco já tem os objetos. Esse alinhamento é uma pendência operacional real e não falha de schema/RLS.
 
@@ -57,19 +57,19 @@ Reconferência de produção imediatamente antes da execução: zero migrations,
 
 ## Revisão e alvos
 
-| Item | Estado concreto |
-| --- | --- |
-| Checkout | `feat/financy-v1`, HEAD `5b398426e51662e06308cccf294820150a3b17d8`, quatro commits locais; nenhum remote ou branch main |
-| Conteúdo candidato | Dashboard e revisão integrada anteriores preservados, mais configuração/documentação de release; ainda sem commit de release |
-| GitHub conectado | `RodrigoGedam`; listagem de repositórios acessíveis do proprietário, sem `financy` |
-| Destino escolhido pelo usuário | Novo `RodrigoGedam/financy`, visibilidade pública; branch estável proposta `main` |
-| Repositório antigo | `RodrigoGedam/ftr-financy` público, com `frontend/`, `backend/` e README GraphQL/Prisma; preservar integralmente, não vincular/sobrescrever |
-| Vercel conectado | `rodrigogedam`, Hobby; projeto proposto `financy` |
-| Escopo Vercel | `rodrigogedams-projects`, `team_GEBnCB8faol74Ab23BukVkI5`, identificado pelo defaultTeamId e projeto existente portfolio |
-| Acesso Vercel | Listagem sem escopo mostra portfolio; listagem explícita do escopo retorna 403, inclusive após o usuário solicitar nova conferência. Painel do navegador sem sessão, CLI Vercel não instalado. Não inferir inexistência de financy no escopo negado; reconsultar após resolver acesso |
-| Supabase dev | `gorymmpnavtudztnasny`, financy-dev, ACTIVE_HEALTHY, PostgreSQL 17.11, São Paulo |
-| Supabase prod | `bqkmhzrrfurphiikylpa`, financy-prod, ACTIVE_HEALTHY, PostgreSQL 17.11, São Paulo; reutilizar |
-| URL/deployment público | Ainda não atribuído; não prometer domínio disponível ou estado READY |
+| Item                           | Estado concreto                                                                                                                                                                                                                                                                       |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Checkout                       | `feat/financy-v1`, HEAD `5b398426e51662e06308cccf294820150a3b17d8`, quatro commits locais; nenhum remote ou branch main                                                                                                                                                               |
+| Conteúdo candidato             | Dashboard e revisão integrada anteriores preservados, mais configuração/documentação de release; ainda sem commit de release                                                                                                                                                          |
+| GitHub conectado               | `RodrigoGedam`; listagem de repositórios acessíveis do proprietário, sem `financy`                                                                                                                                                                                                    |
+| Destino escolhido pelo usuário | Novo `RodrigoGedam/financy`, visibilidade pública; branch estável proposta `main`                                                                                                                                                                                                     |
+| Repositório antigo             | `RodrigoGedam/ftr-financy` público, com `frontend/`, `backend/` e README GraphQL/Prisma; preservar integralmente, não vincular/sobrescrever                                                                                                                                           |
+| Vercel conectado               | `rodrigogedam`, Hobby; projeto proposto `financy`                                                                                                                                                                                                                                     |
+| Escopo Vercel                  | `rodrigogedams-projects`, `team_GEBnCB8faol74Ab23BukVkI5`, identificado pelo defaultTeamId e projeto existente portfolio                                                                                                                                                              |
+| Acesso Vercel                  | Listagem sem escopo mostra portfolio; listagem explícita do escopo retorna 403, inclusive após o usuário solicitar nova conferência. Painel do navegador sem sessão, CLI Vercel não instalado. Não inferir inexistência de financy no escopo negado; reconsultar após resolver acesso |
+| Supabase dev                   | `gorymmpnavtudztnasny`, financy-dev, ACTIVE_HEALTHY, PostgreSQL 17.11, São Paulo                                                                                                                                                                                                      |
+| Supabase prod                  | `bqkmhzrrfurphiikylpa`, financy-prod, ACTIVE_HEALTHY, PostgreSQL 17.11, São Paulo; reutilizar                                                                                                                                                                                         |
+| URL/deployment público         | Ainda não atribuído; não prometer domínio disponível ou estado READY                                                                                                                                                                                                                  |
 
 Identificador verificável da candidata: SHA-256 `937c385a243947aa0e949404f6fac9281be855bfff313e9922c923ce649b3f90`. Calculado sobre os 100 arquivos rastreados/novos elegíveis, ordenados por caminho: concatenar `caminho + NUL + sha256(bytes do arquivo) + LF` e calcular SHA-256. Exclui somente este registro para evitar autorreferência; ele acompanha a candidata como documentação revisável. Não é SHA de commit nem ID de deployment. Reconferir antes de executar a release; qualquer mudança dos arquivos invalida esse identificador.
 
@@ -87,11 +87,11 @@ Inspeção do bundle local confirmou somente o endpoint de desenvolvimento, sem 
 
 Desenvolvimento tem oito políticas de proprietário nas duas tabelas; UPDATE verifica linha existente e resultante. As três versões abaixo correspondem ao SQL remoto, normalizando CRLF e whitespace externo. Não se comparou somente o nome/timestamp. SHA-256 dos arquivos locais:
 
-| Ordem / arquivo | SHA-256 | Dev | Prod |
-| --- | --- | --- | --- |
-| `20261015182208_financy_core.sql` | `061cfdebd6901a3508b4b0a8a4bd0d3e6794f0d0c9db1d5acaed801e124ad8fd` | Aplicada | Pendente |
+| Ordem / arquivo                                    | SHA-256                                                            | Dev      | Prod     |
+| -------------------------------------------------- | ------------------------------------------------------------------ | -------- | -------- |
+| `20261015182208_financy_core.sql`                  | `061cfdebd6901a3508b4b0a8a4bd0d3e6794f0d0c9db1d5acaed801e124ad8fd` | Aplicada | Pendente |
 | `20261016183142_financy_transaction_conflicts.sql` | `353cfdd3f317fe868d0a740bb1cc5788c72da348deca56d033def6f4096c0418` | Aplicada | Pendente |
-| `20261016190434_financy_dashboard.sql` | `8ee34c7ff2480acc8a3a9fe60d31229b7409d407fc8da59db67109b3727124e9` | Aplicada | Pendente |
+| `20261016190434_financy_dashboard.sql`             | `8ee34c7ff2480acc8a3a9fe60d31229b7409d407fc8da59db67109b3727124e9` | Aplicada | Pendente |
 
 Produção: histórico de migrations vazio, nenhuma tabela/view/sequência ou função em public, nenhuma função em private e zero usuários Auth nas consultas específicas. Não se concluiu “banco vazio” pela pasta local nem se afirmou ausência de todos os recursos internos. As migrations são aditivas sobre esse alvo observado. Reconferir imediatamente antes de aplicar; parar diante de drift/conflito, sem reset. Aplicação em um único caminho, com dry-run e versões preservadas; procedimento e recuperação em [operações](../../operations.md). CLI/dry-run/exportação ainda não executados por dependerem de vínculo/autenticação operacional e da fase autorizada. Nenhuma recuperação de banco foi prometida como testada.
 
@@ -99,10 +99,10 @@ Produção: histórico de migrations vazio, nenhuma tabela/view/sequência ou fu
 
 Somente `VITE_SUPABASE_URL` e `VITE_SUPABASE_PUBLISHABLE_KEY` entram no bundle. Chave moderna publicável ativa confirmada em ambos os projetos, valores não impressos. `.env.local` atual contém apenas as duas variáveis esperadas e aponta a desenvolvimento. Nada administrativo usa VITE_.
 
-| Vercel | URL Supabase | Origem da chave publicável |
-| --- | --- | --- |
-| Development e Preview | `https://gorymmpnavtudztnasny.supabase.co` | financy-dev |
-| Production | `https://bqkmhzrrfurphiikylpa.supabase.co` | financy-prod |
+| Vercel                | URL Supabase                               | Origem da chave publicável |
+| --------------------- | ------------------------------------------ | -------------------------- |
+| Development e Preview | `https://gorymmpnavtudztnasny.supabase.co` | financy-dev                |
+| Production            | `https://bqkmhzrrfurphiikylpa.supabase.co` | financy-prod               |
 
 `FINANCY_DEV_PROJECT_REF` fica somente nos testes locais, sem inclusão na Vercel. Não transmitir arquivos .env para o deploy; valores remotos ainda não configurados. Cada ambiente recebe build próprio; Preview não é promovido com credenciais dev para Production.
 

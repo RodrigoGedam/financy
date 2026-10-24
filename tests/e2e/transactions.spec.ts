@@ -43,13 +43,13 @@ test.afterAll(async () => {
 async function login(page: import('@playwright/test').Page) {
 	const session = (await f.alice.auth.getSession()).data.session
 	if (!session) throw new Error('Sessão real obrigatória')
-	await page.addInitScript(({session, storageKey}) => {
-		if (!localStorage.getItem(storageKey))
-			localStorage.setItem(
-				storageKey,
-				JSON.stringify(session),
-			)
-	}, {session, storageKey: f.storageKey})
+	await page.addInitScript(
+		({ session, storageKey }) => {
+			if (!localStorage.getItem(storageKey))
+				localStorage.setItem(storageKey, JSON.stringify(session))
+		},
+		{ session, storageKey: f.storageKey },
+	)
 	await page.goto('/transacoes')
 	await expect(page.getByText('1 a 10 | 12 resultados')).toBeVisible({
 		timeout: 20_000,
@@ -61,7 +61,9 @@ test('CRUD, precisão, URL, histórico, categoria atual, falhas e teclado em des
 	test.setTimeout(150_000)
 	await login(page)
 	await expect(page.locator('tbody tr')).toHaveCount(10)
-	await expect(page.getByRole('table').getByText(/9\.007\.199\.254\.740\.993,01/)).toBeVisible()
+	await expect(
+		page.getByRole('table').getByText(/9\.007\.199\.254\.740\.993,01/),
+	).toBeVisible()
 	for (const width of [1024, 1440]) {
 		await page.setViewportSize({ width, height: 1000 })
 		expect(
@@ -191,7 +193,11 @@ test('CRUD, precisão, URL, histórico, categoria atual, falhas e teclado em des
 	await expect(confirmation).not.toBeVisible()
 	await expect(page.getByText('1 a 10 | 12 resultados')).toBeVisible()
 	await page.getByRole('link', { name: 'Categorias', exact: true }).click()
-	await expect(page.getByRole('article', { name: 'Casa', exact: true }).getByText('12 transações', { exact: true })).toBeVisible()
+	await expect(
+		page
+			.getByRole('article', { name: 'Casa', exact: true })
+			.getByText('12 transações', { exact: true }),
+	).toBeVisible()
 	await page.getByRole('button', { name: 'Editar categoria Casa' }).click()
 	await page
 		.getByRole('dialog')

@@ -47,15 +47,15 @@ O catálogo local `C:/Users/Rodrigo/.codex/models_cache.json` anuncia `gpt-6.1-s
 
 Usar os IDs exatos abaixo na configuração; nomes exibidos como “GPT-6.1 Sol” podem ter outra apresentação no aplicativo. Esforço de raciocínio e modo de velocidade são controles distintos. Não prescrever Max/Ultra, preços ou tempos de conclusão.
 
-| Tarefa | Modelo recomendado | Esforço | Justificativa breve | Alternativa e condição de troca |
-| --- | --- | --- | --- | --- |
-| T0 — diagnóstico, especificação e plano | GPT-6.1 Sol (`gpt-6.1-sol`) | high | Várias fontes, decisões de dados/UX e limites de autorização; contexto amplo | GPT-6 Sol/high se 6.1 indisponível; disponibilidade condicional |
-| T1 — títulos, migration e transição legada | GPT-6.1 Sol | high | Unicode/trigger/CHECK/snapshot, riscos de bloquear edição e contornar API | Mesmo Sol/xhigh se drift ou legado conflitante exigir investigação; não subir esforço sem evidência |
-| T2 — descrição integral e seção restaurada | GPT-6.1 Sol | medium | Contrato definido; coordena tipos/select/JSON/formulário/fixtures e regra de resumo | Sol/high se a inspeção revelar contrato remoto divergente |
-| T3 — alinhamento da tabela desktop | GPT-6 Luna (`gpt-6-luna`) | high | Mudança delimitada, critérios geométricos e CSS/markup conhecidos; custo e resposta favorecem tarefa focada | Sol/medium se houver conflito real entre ações 44, largura e célula compartilhada |
-| T4 — shell, auth e modais responsivos | GPT-6.1 Sol | medium | Padrões existentes, sem nova lógica de domínio; sensível a foco e viewport | Sol/high se teclado virtual/dispositivo revelar comportamento além de CSS |
-| T5 — páginas responsivas, recentes e acesso integral | GPT-6.1 Sol | high | Integra vários layouts, conteúdo extremo e semântica das apresentações sem duplicar estado | Sol/medium apenas se reduzido a ajustes delimitados após T4 e provas já estáveis |
-| T6 — verificação e revisão final | GPT-6.1 Sol | high | Reavaliar impacto combinado em RLS, dinheiro, URL e UI; mesma capacidade de T1 para revisar o risco | Astra/low apenas se houver achado difícil não resolvido e disponibilidade confirmada; não é padrão |
+| Tarefa                                               | Modelo recomendado          | Esforço | Justificativa breve                                                                                         | Alternativa e condição de troca                                                                     |
+| ---------------------------------------------------- | --------------------------- | ------- | ----------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| T0 — diagnóstico, especificação e plano              | GPT-6.1 Sol (`gpt-6.1-sol`) | high    | Várias fontes, decisões de dados/UX e limites de autorização; contexto amplo                                | GPT-6 Sol/high se 6.1 indisponível; disponibilidade condicional                                     |
+| T1 — títulos, migration e transição legada           | GPT-6.1 Sol                 | high    | Unicode/trigger/CHECK/snapshot, riscos de bloquear edição e contornar API                                   | Mesmo Sol/xhigh se drift ou legado conflitante exigir investigação; não subir esforço sem evidência |
+| T2 — descrição integral e seção restaurada           | GPT-6.1 Sol                 | medium  | Contrato definido; coordena tipos/select/JSON/formulário/fixtures e regra de resumo                         | Sol/high se a inspeção revelar contrato remoto divergente                                           |
+| T3 — alinhamento da tabela desktop                   | GPT-6 Luna (`gpt-6-luna`)   | high    | Mudança delimitada, critérios geométricos e CSS/markup conhecidos; custo e resposta favorecem tarefa focada | Sol/medium se houver conflito real entre ações 44, largura e célula compartilhada                   |
+| T4 — shell, auth e modais responsivos                | GPT-6.1 Sol                 | medium  | Padrões existentes, sem nova lógica de domínio; sensível a foco e viewport                                  | Sol/high se teclado virtual/dispositivo revelar comportamento além de CSS                           |
+| T5 — páginas responsivas, recentes e acesso integral | GPT-6.1 Sol                 | high    | Integra vários layouts, conteúdo extremo e semântica das apresentações sem duplicar estado                  | Sol/medium apenas se reduzido a ajustes delimitados após T4 e provas já estáveis                    |
+| T6 — verificação e revisão final                     | GPT-6.1 Sol                 | high    | Reavaliar impacto combinado em RLS, dinheiro, URL e UI; mesma capacidade de T1 para revisar o risco         | Astra/low apenas se houver achado difícil não resolvido e disponibilidade confirmada; não é padrão  |
 
 Fallback geral: confirmar um modelo disponível de capacidade equivalente antes de executar; se catálogo/conta divergirem, atualizar a recomendação com evidência. Não substituir por modelos antigos retirados do Codex ou confundir identificadores API com rótulos visuais.
 
@@ -63,17 +63,18 @@ Fallback geral: confirmar um modelo disponível de capacidade equivalente antes 
 
 Estado observado: `main` / HEAD e referência local origin/main = `359a1857ad37e87c576fd03a71d85af03984a776`. Uma proposta do usuário está não rastreada; os documentos desta entrega também não estarão no commit-base. Nenhuma branch/worktree foi criada.
 
-| Unidade / tarefas | Branch ou worktree | Nome de branch proposto | Base e dependências | Motivo / caminho proposto | Validação e ordem |
-| --- | --- | --- | --- | --- | --- |
-| Planejamento T0 | Checkout atual, só documentos | Nenhuma nova branch nesta etapa | main observada; não modificar produto | Pedido de análise; preservar arquivo do usuário | Auto-revisão textual agora; revisão humana antes de T1 |
-| Implementação T1–T5 e revisão T6 | **Um novo worktree com branch própria**, execução sequencial | `codex/financy-ux-responsive` | main reconfirmada no início; se mudar, revisar diff/base antes de criar. T2 depende T1; T3 depende contratos estáveis; T4 após T2/T3; T5 após T4 | Preservar checkout/prompt/documentos locais e separar futuro trabalho de produto. Caminho proposto: `C:/Users/Rodrigo/OneDrive/Documentos/Projetos/Financy-ux-responsive` | Verificação por tarefa, revisão combinada T6; integrar uma unidade em main após autorização de integração |
-| Publicação / produção | Fora deste plano de implementação | Nenhuma proposta de branch de deploy | Depende T6 aprovado e autorização específica | Worktree não isola Supabase nem Vercel | Nova decisão operacional; sem deploy automático ao integrar |
+| Unidade / tarefas                | Branch ou worktree                                           | Nome de branch proposto              | Base e dependências                                                                                                                              | Motivo / caminho proposto                                                                                                                                                 | Validação e ordem                                                                                         |
+| -------------------------------- | ------------------------------------------------------------ | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| Planejamento T0                  | Checkout atual, só documentos                                | Nenhuma nova branch nesta etapa      | main observada; não modificar produto                                                                                                            | Pedido de análise; preservar arquivo do usuário                                                                                                                           | Auto-revisão textual agora; revisão humana antes de T1                                                    |
+| Implementação T1–T5 e revisão T6 | **Um novo worktree com branch própria**, execução sequencial | `codex/financy-ux-responsive`        | main reconfirmada no início; se mudar, revisar diff/base antes de criar. T2 depende T1; T3 depende contratos estáveis; T4 após T2/T3; T5 após T4 | Preservar checkout/prompt/documentos locais e separar futuro trabalho de produto. Caminho proposto: `C:/Users/Rodrigo/OneDrive/Documentos/Projetos/Financy-ux-responsive` | Verificação por tarefa, revisão combinada T6; integrar uma unidade em main após autorização de integração |
+| Publicação / produção            | Fora deste plano de implementação                            | Nenhuma proposta de branch de deploy | Depende T6 aprovado e autorização específica                                                                                                     | Worktree não isola Supabase nem Vercel                                                                                                                                    | Nova decisão operacional; sem deploy automático ao integrar                                               |
 
 O caminho e nome são propostas, não recursos existentes. Preferir a ferramenta nativa de worktrees; se ela atribuir outro caminho gerenciado, registrar o caminho real. Confirmar permissões de escrita desse diretório na execução; não interpretar esta proposta como concessão de acesso ao filesystem.
 
 Uma branch no checkout atual seria a menor alternativa se ele estivesse livre e não houvesse interesse em preservar o contexto aberto. Aqui o worktree único preserva a pasta atual; não criar um por correção cosmética. Branches no mesmo diretório não isolam alterações locais.
 
 Primeiro passo futuro, antes de editar produto:
+
 - Conferir git status, branch, HEAD, referência-base, branches/worktrees existentes e diferenças não commitadas. Preservar tudo; sem stash/reset/clean ou checkout forçado.
 - Invocar using-git-worktrees apenas na execução autorizada; criar o isolamento proposto a partir da base confirmada. Não copiar alterações não aprovadas do produto.
 - Levar somente cópias da especificação/plano aprovados ao worktree, pois não estão no commit-base. Não mover o prompt do usuário nem copiar .env, sessões ou credenciais.
@@ -85,20 +86,21 @@ Primeiro passo futuro, antes de editar produto:
 
 A [seção 7 da especificação](../specs/2026-10-20-financy-ux-responsive-design.md#7-análise-de-impacto-apoiada-pelo-graphify) registra queries, paths, arestas EXTRACTED/INFERRED, fontes e lacunas do grafo. Nenhum vínculo de CSS ou caminho completo de persistência foi inventado no grafo.
 
-| Área | Alterações futuras limitadas ao escopo |
-| --- | --- |
-| Texto compartilhado T1 | Criar `src/lib/financial-text.ts` e `financial-text.test.ts`; formular validação comum nos dois diálogos e APIs |
-| Categorias T2 | `src/features/categories/{types,api,queries,categories-page,category-dialog}.ts(x)`; queries só se consumidor/tipo exigir, mantendo keys e invalidação |
-| Resumos T2 | Criar `src/features/categories/summary.ts` e `summary.test.ts` para soma/empate/zero, usados somente pela página |
-| Transações T1/T2/T3/T5 | `src/features/transactions/{api,types,transaction-dialog,transactions-page}.ts(x)`; `search.ts`/`router-search.ts` são regressão, não alvo de refatoração |
-| Dashboard T2/T5 | `src/features/dashboard/{api,types,dashboard-page}.ts(x)`; queries permanecem com período/userId existentes |
-| UI T4/T5 | `src/components/app-shell.tsx`, `src/styles.css`, AuthForm/ProfilePage; Button/Input só se um ajuste realmente não puder ser expresso nas classes existentes |
-| Detalhes T5 | Criar `src/features/transactions/transaction-details-dialog.tsx`, apresentação de leitura reutilizada em dashboard/listagem |
-| Banco/tipos T1/T2 | Duas novas migrations, sufixos `financial_titles` e `category_description`; nomes temporais gerados pelo CLI no futuro. Regenerar `src/lib/database.types.ts`. Não editar as três migrations aplicadas |
-| Testes/fixtures | Unitários existentes de transaction/dashboard API; criar unitário `src/features/categories/api.test.ts` (não existe hoje); integrações category/transaction/dashboard/security/integrity; E2E category/transaction/dashboard/financy/access/auth, fixtures compartilhadas; novo `tests/e2e/responsive.spec.ts` |
-| Documentação final T6 | README, DESIGN, operações recebem atualização datada, sem apagar histórico; criar registro de execução novo. Não editar esses arquivos nesta etapa |
+| Área                   | Alterações futuras limitadas ao escopo                                                                                                                                                                                                                                                                         |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Texto compartilhado T1 | Criar `src/lib/financial-text.ts` e `financial-text.test.ts`; formular validação comum nos dois diálogos e APIs                                                                                                                                                                                                |
+| Categorias T2          | `src/features/categories/{types,api,queries,categories-page,category-dialog}.ts(x)`; queries só se consumidor/tipo exigir, mantendo keys e invalidação                                                                                                                                                         |
+| Resumos T2             | Criar `src/features/categories/summary.ts` e `summary.test.ts` para soma/empate/zero, usados somente pela página                                                                                                                                                                                               |
+| Transações T1/T2/T3/T5 | `src/features/transactions/{api,types,transaction-dialog,transactions-page}.ts(x)`; `search.ts`/`router-search.ts` são regressão, não alvo de refatoração                                                                                                                                                      |
+| Dashboard T2/T5        | `src/features/dashboard/{api,types,dashboard-page}.ts(x)`; queries permanecem com período/userId existentes                                                                                                                                                                                                    |
+| UI T4/T5               | `src/components/app-shell.tsx`, `src/styles.css`, AuthForm/ProfilePage; Button/Input só se um ajuste realmente não puder ser expresso nas classes existentes                                                                                                                                                   |
+| Detalhes T5            | Criar `src/features/transactions/transaction-details-dialog.tsx`, apresentação de leitura reutilizada em dashboard/listagem                                                                                                                                                                                    |
+| Banco/tipos T1/T2      | Duas novas migrations, sufixos `financial_titles` e `category_description`; nomes temporais gerados pelo CLI no futuro. Regenerar `src/lib/database.types.ts`. Não editar as três migrations aplicadas                                                                                                         |
+| Testes/fixtures        | Unitários existentes de transaction/dashboard API; criar unitário `src/features/categories/api.test.ts` (não existe hoje); integrações category/transaction/dashboard/security/integrity; E2E category/transaction/dashboard/financy/access/auth, fixtures compartilhadas; novo `tests/e2e/responsive.spec.ts` |
+| Documentação final T6  | README, DESIGN, operações recebem atualização datada, sem apagar histórico; criar registro de execução novo. Não editar esses arquivos nesta etapa                                                                                                                                                             |
 
 Interfaces propostas para evitar decisões implícitas:
+
 - `normalizeFinancialTitle(value: string, field: 'category' | 'transaction'): string`: trim compartilhado, valida 1–20 e lança mensagem de campo.
 - `countTitleCharacters(value: string): number`: conta pontos de código depois do mesmo trim; não normaliza Unicode.
 - `CategoryInput = {name:string; description:string|null; color:CategoryColor; icon:CategoryIcon}`; Category acrescenta id; CategorySummary acrescenta transaction_count. Todos os construtores/fixtures compilam com o campo.
@@ -238,18 +240,19 @@ Interfaces propostas para evitar decisões implícitas:
 
 ### Larguras e modos de entrada
 
-| Largura CSS | Cobertura automatizada proporcional | Comparação visual / interação complementar |
-| --- | --- | --- |
-| 320 | Smoke de todas as páginas, overflow de página, controles/labels, paginação e modal baixo; dados extremos por resposta determinística | Screenshot dos piores casos e leitura dos detalhes; sem repetir CRUD completo |
-| 375 | Geometria de shell/cards/filtros e abertura de modal | Portrait e paisagem representativa 667×375 |
-| 390 | Uma jornada principal autenticada de categorias/transações/dashboard, criar/editar/limpar descrição e detalhes por toque simulado | Screenshots mobile e foco no viewport 390×400 |
-| 768 | Navegação numa linha, filtros em duas colunas, recentes e cards da listagem | Screenshot de transição; centro do track e informações completas |
-| 1024 | Tabela de seis colunas, ações 44, alinhamento e filtros de quatro colunas | Screenshot desktop compacto; se não couber, ajustar breakpoint em vez de esconder defeito |
-| 1440 | Suíte E2E atual e regressão da jornada integrada, alinhamento, categorias e dashboard | Comparação desktop com Figma/imagens, screenshots de novos resumos/descrição/recentes |
+| Largura CSS | Cobertura automatizada proporcional                                                                                                  | Comparação visual / interação complementar                                                |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
+| 320         | Smoke de todas as páginas, overflow de página, controles/labels, paginação e modal baixo; dados extremos por resposta determinística | Screenshot dos piores casos e leitura dos detalhes; sem repetir CRUD completo             |
+| 375         | Geometria de shell/cards/filtros e abertura de modal                                                                                 | Portrait e paisagem representativa 667×375                                                |
+| 390         | Uma jornada principal autenticada de categorias/transações/dashboard, criar/editar/limpar descrição e detalhes por toque simulado    | Screenshots mobile e foco no viewport 390×400                                             |
+| 768         | Navegação numa linha, filtros em duas colunas, recentes e cards da listagem                                                          | Screenshot de transição; centro do track e informações completas                          |
+| 1024        | Tabela de seis colunas, ações 44, alinhamento e filtros de quatro colunas                                                            | Screenshot desktop compacto; se não couber, ajustar breakpoint em vez de esconder defeito |
+| 1440        | Suíte E2E atual e regressão da jornada integrada, alinhamento, categorias e dashboard                                                | Comparação desktop com Figma/imagens, screenshots de novos resumos/descrição/recentes     |
 
 Executar todos os seis tamanhos em casos geométricos rápidos dentro de responsive.spec.ts, não multiplicar todas as suítes/projetos por seis. Manter viewport default 1440×1000 para a suíte atual; setViewportSize por cenário de responsividade. Usar touch em contexto representativo de 390, sem confundir clique de mouse com toque.
 
 Casos obrigatórios:
+
 - Descrição: omitida/null/vazia/espaços/21+; criação/edição/limpeza; reload; coluna/select/parser/JSON; categoria antiga sem descrição. Integração prova persistência; DOM sozinho não basta.
 - Títulos: 19/20/21 na UI, função compartilhada, API pública e RPC; trim de espaços externos Unicode; acentos/emoji; nenhuma truncagem. Leitura de legado e correção mantêm dados/snapshot.
 - Dinheiro/calendário: valor enorme, centavos, sinal/tipo, mês/data de São Paulo; mesmas funções de money/dates. Sem conversão Number/parseFloat.
@@ -264,6 +267,7 @@ Capturas: preparar dados determinísticos; revisar screenshots antes/depois e go
 ### Comandos disponíveis, somente para execução posterior
 
 Após focados e ambiente confirmado:
+
 1. `pnpm typecheck`
 2. `pnpm lint`
 3. `pnpm test`
@@ -288,6 +292,7 @@ Limitações atuais: auditoria é fotografia; grafo anterior à release tem lacu
 ## 8. Auto-revisão do planejamento
 
 Revisado em 20/10/2026:
+
 - R1→T2; R2→T2; R3→T1; R4→T3; R5→T5; R6→T4/T5/T6.
 - Tipos, selects de categorias embutidas, JSON de ambas as listas do dashboard, fixtures, grants de coluna, invalidação e snapshots incluídos.
 - Cada export proposto tem produtor/consumidor; APIs públicas existentes conservam assinaturas; migration temporal será gerada em execução, não inventada agora.

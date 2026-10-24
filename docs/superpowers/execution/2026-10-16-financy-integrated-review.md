@@ -6,13 +6,13 @@ Foram confrontados especificação, plano, DESIGN, componentes, consumidores de 
 
 ## Matriz de requisitos e evidências
 
-| Regras | Evidências executáveis existentes e complemento desta revisão |
-| --- | --- |
-| AUTH-01–07 | `access.spec.ts`, `auth.spec.ts`, testes de `session-cache`: cadastro/login/perfil, senha mínima por API, sessão restaurada, rota privada, rede indisponível, logout e segunda conta. `financy.spec.ts` completa a troca de identidade após operações financeiras. |
-| CAT-01–07 | `categories.test.ts` unitário e integração, `security.test.ts`, `integrity.test.ts`, `categories.spec.ts`: catálogo fechado, duplicidade normalizada, isolamento, edição, exclusão sem uso e recusa com uso. Jornada integrada confere contagens após criação, edição, exclusão e reclassificação. |
-| TX-01–08 | Unitários de dinheiro/datas/validação, integração `transactions.test.ts`, `integrity.test.ts`, `security.test.ts`, E2E `transactions.spec.ts`: CRUD, categoria obrigatória, FK composta, dinheiro textual grande/centavos, datas inválidas/futuras, mês/ano, conflitos e concorrência. Mutações negadas conferem persistência da linha original, inclusive resposta com zero linhas. |
-| DASH-01–03 | Integração `dashboard.test.ts` e E2E `dashboard.spec.ts`: saldo histórico, mês vazio, ranking somente de despesas, recentes, desempates, centavos/negativos, outra conta/anônimo e 1.005 despesas além do limite padrão da API; link mantém mês. Mês trocado rapidamente não mistura respostas. |
-| LIST-01–03 | Unitários de search, integração e E2E de transações: busca literal com curingas/caracteres especiais, filtros combinados, dez linhas, total remoto, ordenação determinística, última página após exclusão, URL/reload/voltar/avançar. Respostas pendentes na troca de conta não reaparecem na conta seguinte. |
+| Regras     | Evidências executáveis existentes e complemento desta revisão                                                                                                                                                                                                                                                                                                                        |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| AUTH-01–07 | `access.spec.ts`, `auth.spec.ts`, testes de `session-cache`: cadastro/login/perfil, senha mínima por API, sessão restaurada, rota privada, rede indisponível, logout e segunda conta. `financy.spec.ts` completa a troca de identidade após operações financeiras.                                                                                                                   |
+| CAT-01–07  | `categories.test.ts` unitário e integração, `security.test.ts`, `integrity.test.ts`, `categories.spec.ts`: catálogo fechado, duplicidade normalizada, isolamento, edição, exclusão sem uso e recusa com uso. Jornada integrada confere contagens após criação, edição, exclusão e reclassificação.                                                                                   |
+| TX-01–08   | Unitários de dinheiro/datas/validação, integração `transactions.test.ts`, `integrity.test.ts`, `security.test.ts`, E2E `transactions.spec.ts`: CRUD, categoria obrigatória, FK composta, dinheiro textual grande/centavos, datas inválidas/futuras, mês/ano, conflitos e concorrência. Mutações negadas conferem persistência da linha original, inclusive resposta com zero linhas. |
+| DASH-01–03 | Integração `dashboard.test.ts` e E2E `dashboard.spec.ts`: saldo histórico, mês vazio, ranking somente de despesas, recentes, desempates, centavos/negativos, outra conta/anônimo e 1.005 despesas além do limite padrão da API; link mantém mês. Mês trocado rapidamente não mistura respostas.                                                                                      |
+| LIST-01–03 | Unitários de search, integração e E2E de transações: busca literal com curingas/caracteres especiais, filtros combinados, dez linhas, total remoto, ordenação determinística, última página após exclusão, URL/reload/voltar/avançar. Respostas pendentes na troca de conta não reaparecem na conta seguinte.                                                                        |
 
 As 19 integrações usam Data API/SDK reais, chave publicável e sessões de Alice/Bob/anônimo, sem service_role nas operações testadas. Capturas ou mocks de falha de rede não são apresentados como evidência de RLS. O schema remoto de desenvolvimento foi reconferido: três migrations locais/remotas correspondentes (`20261015182208`, `20261016183142`, `20261016190434`), duas tabelas com RLS, oito políticas de proprietário. Grants, SECURITY INVOKER, execução das RPCs e search_path foram revisados. Nenhuma migration foi reaplicada.
 
@@ -40,16 +40,16 @@ Não foi reproduzido um defeito financeiro do produto nesta revisão. Não se al
 
 `tests/e2e/financy.spec.ts` cobre a lacuna do percurso contínuo: conta vazia, orientação sem categorias, criação de duas categorias, receita/despesa pelo formulário, paginação 10/2, reload e filtros, dashboard, edição e recusa de excluir categoria usada, exclusão de despesa, reclassificação, categoria com zero vínculos, exclusão permitida, logout e Bob sem dados de Alice. Dez despesas de centavo são criadas por API para exercitar paginação sem repetir formulários sem propósito. As credenciais são de contas geradas na execução, com login real pela tela.
 
-| Verificação final | Resultado |
-| --- | --- |
-| `pnpm test` | 155 aprovados, 10 arquivos; 5,62 s |
-| `pnpm test:integration` | 19 aprovados, 5 arquivos; 88,12 s; somente financy-dev |
-| `pnpm test:e2e` | 15 aprovados; 2,8 min; Chromium, servidor próprio |
-| `pnpm typecheck` | Exit 0 |
-| `pnpm lint` | Exit 0 |
-| `pnpm build` | Exit 0; 2,84 s |
+| Verificação final                                     | Resultado                                                          |
+| ----------------------------------------------------- | ------------------------------------------------------------------ |
+| `pnpm test`                                           | 155 aprovados, 10 arquivos; 5,62 s                                 |
+| `pnpm test:integration`                               | 19 aprovados, 5 arquivos; 88,12 s; somente financy-dev             |
+| `pnpm test:e2e`                                       | 15 aprovados; 2,8 min; Chromium, servidor próprio                  |
+| `pnpm typecheck`                                      | Exit 0                                                             |
+| `pnpm lint`                                           | Exit 0                                                             |
+| `pnpm build`                                          | Exit 0; 2,84 s                                                     |
 | Prettier dos seis arquivos TS alterados nesta revisão | Aprovado; ajuste final de formatação verificado no arquivo afetado |
-| `git diff --check` | Aprovado |
+| `git diff --check`                                    | Aprovado                                                           |
 
 A integração foi executada uma vez após as mudanças da configuração/fixture. O E2E completo foi repetido porque a revisão independente encontrou depois a falha do manifesto; a segunda execução valida a correção. Casos RED e a jornada isolada foram usados somente para as novas lacunas. Nenhuma cobertura financeira foi duplicada para espelhar código.
 

@@ -10,15 +10,15 @@
 
 ## Estado reconfirmado em 21/10/2026
 
-| Verificação executada | Evidência |
-| --- | --- |
-| `docker version` | Client e Server **29.8.0**, exit 0 |
-| `docker info` | Engine **linux**, arquitetura **x86_64**, exit 0 |
-| `wsl --version` | WSL **3.0.3.0**, kernel **6.18.54.1-1** |
-| `docker run --rm --network none hello-world` | **Hello from Docker!**, exit 0; imagem oficial baixada, container removido automaticamente |
-| `docker ps` | Nenhum container em execução no momento da consulta |
-| main local | `359a1857ad37e87c576fd03a71d85af03984a776`; quatro documentos não rastreados preservados |
-| Branch de implementação | `codex/financy-ux-responsive`, HEAD `8d2b1ecb0eb8b7cf5b81d593daa20ee201166456`; limpa antes da criação deste plano |
+| Verificação executada                        | Evidência                                                                                                          |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `docker version`                             | Client e Server **29.8.0**, exit 0                                                                                 |
+| `docker info`                                | Engine **linux**, arquitetura **x86_64**, exit 0                                                                   |
+| `wsl --version`                              | WSL **3.0.3.0**, kernel **6.18.54.1-1**                                                                            |
+| `docker run --rm --network none hello-world` | **Hello from Docker!**, exit 0; imagem oficial baixada, container removido automaticamente                         |
+| `docker ps`                                  | Nenhum container em execução no momento da consulta                                                                |
+| main local                                   | `359a1857ad37e87c576fd03a71d85af03984a776`; quatro documentos não rastreados preservados                           |
+| Branch de implementação                      | `codex/financy-ux-responsive`, HEAD `8d2b1ecb0eb8b7cf5b81d593daa20ee201166456`; limpa antes da criação deste plano |
 
 **Docker operacional confirmado; o bloqueio de runtime registrado em 20/10 foi superado.** Isso não comprova ainda que a stack Supabase local sobe ou que as migrations passam. Não foi iniciado Supabase nem aplicado SQL nesta preparação. A imagem hello-world ficou apenas no cache local.
 

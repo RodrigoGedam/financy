@@ -1,2 +1,4 @@
 import { AuthForm } from './auth-form'
-export function LoginPage() { return <AuthForm /> }
+export function LoginPage() {
+	return <AuthForm />
+}

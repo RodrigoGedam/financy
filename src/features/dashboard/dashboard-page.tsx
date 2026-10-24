@@ -23,7 +23,11 @@ export function DashboardPage() {
 	const [details, setDetails] = useState<Transaction | null>(null)
 	const trigger = useRef<HTMLButtonElement | null>(null)
 	const monthInput = useRef<HTMLInputElement>(null)
-	const restoreFocus = () => (trigger.current?.isConnected && trigger.current.getClientRects().length ? trigger.current : monthInput.current)?.focus()
+	const restoreFocus = () =>
+		(trigger.current?.isConnected && trigger.current.getClientRects().length
+			? trigger.current
+			: monthInput.current
+		)?.focus()
 	const period = `${month.slice(5)}/${month.slice(0, 4)}`
 	const search = parseTransactionSearch({ month })
 	return (
@@ -160,7 +164,22 @@ export function DashboardPage() {
 													<Icon aria-hidden="true" />
 												</span>
 												<div className="dashboard-recent-description">
-													<h3><button type="button" className="transaction-title" aria-label={`Ver detalhes da transação ${tx.description}`} onClick={event => { trigger.current = event.currentTarget; setDetails(tx) }}>{tx.description}</button></h3>
+													<h3>
+														<button
+															type="button"
+															className="transaction-title"
+															aria-label={`Ver detalhes da transação ${tx.description}`}
+															onClick={(
+																event,
+															) => {
+																trigger.current =
+																	event.currentTarget
+																setDetails(tx)
+															}}
+														>
+															{tx.description}
+														</button>
+													</h3>
 													<time
 														dateTime={
 															tx.occurred_on
@@ -295,7 +314,13 @@ export function DashboardPage() {
 					</div>
 				</div>
 			)}
-			{details && <TransactionDetailsDialog transaction={details} onClose={() => setDetails(null)} restoreFocus={restoreFocus} />}
+			{details && (
+				<TransactionDetailsDialog
+					transaction={details}
+					onClose={() => setDetails(null)}
+					restoreFocus={restoreFocus}
+				/>
+			)}
 		</div>
 	)
 }

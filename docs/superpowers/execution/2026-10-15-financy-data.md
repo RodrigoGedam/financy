@@ -33,19 +33,19 @@ Fontes: [segurança da Data API](https://supabase.com/docs/guides/api/securing-y
 
 ## Verificação e limpeza
 
-| Verificação | Resultado |
-| --- | --- |
-| Baseline unitário | 1/1 passou |
-| Integração RED antes da migration | 9 falhas por `PGRST205`, schema ausente; teste adicional da RPC também falhou por schema ausente (demais pulados não contam como aprovados) |
-| Integração após migration | 10/10 passaram |
-| Integração com Database conectado ao cliente | 10/10 passaram, 21,21 s |
-| Integridade após reforçar asserts de update recusado | 6/6 passaram, 11,43 s; segurança permaneceu na execução completa anterior |
-| `pnpm typecheck` | Passou após corrigir nulidade do retorno de signup na fixture |
-| `pnpm lint` | Passou |
-| `pnpm test` | 2/2 passaram, incluindo trava do ambiente |
-| `pnpm build` | Passou; chunk principal 572,40 kB, gzip 169,10 kB; aviso preexistente acima de 500 kB |
-| Auditoria SQL remota | RLS, policies, grants por coluna, permissões/search_path de funções, constraints, typmod e histórico conferidos |
-| Revisão independente | Sem achados bloqueadores; condicionada aos checks e à limpeza confirmados nesta execução |
+| Verificação                                          | Resultado                                                                                                                                   |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| Baseline unitário                                    | 1/1 passou                                                                                                                                  |
+| Integração RED antes da migration                    | 9 falhas por `PGRST205`, schema ausente; teste adicional da RPC também falhou por schema ausente (demais pulados não contam como aprovados) |
+| Integração após migration                            | 10/10 passaram                                                                                                                              |
+| Integração com Database conectado ao cliente         | 10/10 passaram, 21,21 s                                                                                                                     |
+| Integridade após reforçar asserts de update recusado | 6/6 passaram, 11,43 s; segurança permaneceu na execução completa anterior                                                                   |
+| `pnpm typecheck`                                     | Passou após corrigir nulidade do retorno de signup na fixture                                                                               |
+| `pnpm lint`                                          | Passou                                                                                                                                      |
+| `pnpm test`                                          | 2/2 passaram, incluindo trava do ambiente                                                                                                   |
+| `pnpm build`                                         | Passou; chunk principal 572,40 kB, gzip 169,10 kB; aviso preexistente acima de 500 kB                                                       |
+| Auditoria SQL remota                                 | RLS, policies, grants por coluna, permissões/search_path de funções, constraints, typmod e histórico conferidos                             |
+| Revisão independente                                 | Sem achados bloqueadores; condicionada aos checks e à limpeza confirmados nesta execução                                                    |
 
 Testes cobrem CRUD próprio, isolamento simétrico Alice/Bob, anônimo, dono forjado/reassociado, identidade/criação fornecidas, categoria alheia/inexistente/utilizada, unicidade, catálogo, campos vazios/nulos, dinheiro inválido, calendário/data futura e tipo inválido. Mutations RLS com HTTP de sucesso e zero linhas são verificadas relendo o original; recusas de FK, dinheiro, data e unicidade também preservam a linha original.
 

@@ -29,14 +29,21 @@ export function validateTransactionInput(
 	}
 	if (value.occurred_on > todayInSaoPaulo())
 		throw new Error('A data não pode ser futura.')
-	const description = normalizeFinancialTitle(value.description, 'transaction')
+	const description = normalizeFinancialTitle(
+		value.description,
+		'transaction',
+	)
 	if (!['income', 'expense'].includes(value.kind))
 		throw new Error('Selecione o tipo.')
 	if (!value.category_id) throw new Error('Selecione uma categoria.')
 	return { ...value, amount, description }
 }
 function failure(error: { code?: string; message?: string }): Error {
-	if (error.code === '23514' && error.message?.includes('transactions_description_length_check')) return new Error('Use até 20 caracteres na descrição da transação.')
+	if (
+		error.code === '23514' &&
+		error.message?.includes('transactions_description_length_check')
+	)
+		return new Error('Use até 20 caracteres na descrição da transação.')
 	if (error.code === 'P0002' || error.code === 'P0001')
 		return new Error(
 			'Transação removida ou alterada em outro contexto. Feche este diálogo e atualize a lista antes de tentar novamente.',
@@ -45,7 +52,10 @@ function failure(error: { code?: string; message?: string }): Error {
 		return new Error(
 			'Categoria indisponível. Atualize a lista e selecione outra categoria.',
 		)
-	if (error.code === '23514') return new Error('Confira o valor, a data e os campos obrigatórios. Títulos financeiros devem ter até 20 caracteres.')
+	if (error.code === '23514')
+		return new Error(
+			'Confira o valor, a data e os campos obrigatórios. Títulos financeiros devem ter até 20 caracteres.',
+		)
 	if (error.code === '22007')
 		return new Error('Confira o valor, a data e os campos obrigatórios.')
 	return new Error(
@@ -106,7 +116,8 @@ export async function listTransactions(
 		const amount = normalizeDecimal(row.amount)
 		if (
 			!category ||
-			(category.description !== null && typeof category.description !== 'string') ||
+			(category.description !== null &&
+				typeof category.description !== 'string') ||
 			!isCategoryColor(category.color) ||
 			!isCategoryIcon(category.icon) ||
 			!amount ||

@@ -38,16 +38,16 @@ Implementação T1–T5 registrada sequencialmente na branch isolada. O aceite d
 
 ## Verificações finais executadas
 
-| Comando / prova | Resultado real |
-| --- | --- |
-| `pnpm typecheck` | exit 0, inclusive testes de integração atualizados |
-| `pnpm lint` | exit 0 |
-| `pnpm test` | exit 0; 13 arquivos, **183/183 testes** |
-| `pnpm test:ui:local --reporter=line` | exit 0; **10/10 cenários**, um worker, Chromium, 1,3 min |
-| `pnpm build` | exit 0; 2266 módulos, sem publicação; dist ignorado |
-| `git diff main --check` | sem erros de whitespace |
-| Estado de main original | continua em main, com os mesmos quatro documentos não rastreados; sem alteração de produto |
-| Docker local | npipe inicialmente ausente; após iniciar a instalação existente, endpoint Linux devolveu HTTP 500, inclusive na reconferência final |
+| Comando / prova                      | Resultado real                                                                                                                      |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm typecheck`                     | exit 0, inclusive testes de integração atualizados                                                                                  |
+| `pnpm lint`                          | exit 0                                                                                                                              |
+| `pnpm test`                          | exit 0; 13 arquivos, **183/183 testes**                                                                                             |
+| `pnpm test:ui:local --reporter=line` | exit 0; **10/10 cenários**, um worker, Chromium, 1,3 min                                                                            |
+| `pnpm build`                         | exit 0; 2266 módulos, sem publicação; dist ignorado                                                                                 |
+| `git diff main --check`              | sem erros de whitespace                                                                                                             |
+| Estado de main original              | continua em main, com os mesmos quatro documentos não rastreados; sem alteração de produto                                          |
+| Docker local                         | npipe inicialmente ausente; após iniciar a instalação existente, endpoint Linux devolveu HTTP 500, inclusive na reconferência final |
 
 Casos unitários novos: contagem Unicode/trim; escrita de títulos; normalização/limpeza de descrição; leitores de categorias embutidas e ambos os JSONs do dashboard; soma segura/empate/zero; preservação de dinheiro textual e do snapshot legado integral. Testes antigos de dinheiro, datas, URL, cache e guards de produção continuam verdes.
 
@@ -57,13 +57,13 @@ Na preparação da suíte visual, a fixture precisava expor Content-Range por CO
 
 ## Matriz de aceite e evidência
 
-| Requisito | Implementação e prova | Limite pendente |
-| --- | --- | --- |
-| R1 resumos | Lista existente, histórico completo, soma segura, empate estável e zero sem categoria utilizada; sem zeros em loading/erro; capturas de categorias | Conferência futura com dados reais após migrations |
-| R2 descrição | Campo opcional, null explícito, selects/parsers e ambos JSONs; fluxo UI criar/editar/limpar/reload com fixture; integração real preparada | Persistência, grants/RLS e regeneração de tipos não executados em banco |
-| R3 títulos | 15 unitários Unicode, API e snapshot; UI conserva 21 emojis e foca o inválido; migrations aditivas NOT VALID sem UPDATE de dados | Ensaio legado antes de M1, chamadas diretas/RPC e validação histórica real |
-| R4 tabela | Headers e células em 1024/1440; badges de tamanhos distintos; tolerância de 2 CSS px; ações 44×44; screenshots revisadas | Revisão humana final |
-| R5 recentes | Centros iguais e coincidentes com o track em 768/1024/1440; ellipsis local real; detalhes integrais por Enter/toque, Escape/foco | Revisão humana final |
+| Requisito     | Implementação e prova                                                                                                                                                              | Limite pendente                                                                   |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| R1 resumos    | Lista existente, histórico completo, soma segura, empate estável e zero sem categoria utilizada; sem zeros em loading/erro; capturas de categorias                                 | Conferência futura com dados reais após migrations                                |
+| R2 descrição  | Campo opcional, null explícito, selects/parsers e ambos JSONs; fluxo UI criar/editar/limpar/reload com fixture; integração real preparada                                          | Persistência, grants/RLS e regeneração de tipos não executados em banco           |
+| R3 títulos    | 15 unitários Unicode, API e snapshot; UI conserva 21 emojis e foca o inválido; migrations aditivas NOT VALID sem UPDATE de dados                                                   | Ensaio legado antes de M1, chamadas diretas/RPC e validação histórica real        |
+| R4 tabela     | Headers e células em 1024/1440; badges de tamanhos distintos; tolerância de 2 CSS px; ações 44×44; screenshots revisadas                                                           | Revisão humana final                                                              |
+| R5 recentes   | Centros iguais e coincidentes com o track em 768/1024/1440; ellipsis local real; detalhes integrais por Enter/toque, Escape/foco                                                   | Revisão humana final                                                              |
 | R6 responsivo | Smoke em 320/375/390/768/1024/1440 para dashboard, transações, categorias, login, cadastro e perfil; modais baixos; sem overflow global; resize não altera URL nem dispara queries | Zoom nativo 200/400%, Safari iOS/Chrome Android, teclado virtual e autofill reais |
 
 Capturas ficam em `test-fixtures/ux-responsive/` dentro deste worktree, ignoradas pelo Git. Foram visualizadas capturas do alinhamento em 1024, categorias em 1440, dashboard em 390/1440, transações em 320 e modal baixo. Arquivos principais:

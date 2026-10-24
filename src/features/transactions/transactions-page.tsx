@@ -81,7 +81,20 @@ export function TransactionsPage() {
 							>
 								<Icon aria-hidden="true" />
 							</span>
-							<button type="button" className="transaction-title" aria-label={`Ver detalhes da transação ${row.original.description}`} onClick={event => { trigger.current = event.currentTarget; setDialog({ mode: 'details', transaction: row.original }) }}>{row.original.description}</button>
+							<button
+								type="button"
+								className="transaction-title"
+								aria-label={`Ver detalhes da transação ${row.original.description}`}
+								onClick={(event) => {
+									trigger.current = event.currentTarget
+									setDialog({
+										mode: 'details',
+										transaction: row.original,
+									})
+								}}
+							>
+								{row.original.description}
+							</button>
 						</div>
 					)
 				},
@@ -380,50 +393,110 @@ export function TransactionsPage() {
 						</div>
 					) : (
 						<>
-						<div className="transaction-table-scroll">
-							<table>
-								<thead>
-									{table.getHeaderGroups().map((group) => (
-										<tr key={group.id}>
-											{group.headers.map((header) => (
-												<th scope="col" key={header.id} data-column={header.column.id}>
-													{flexRender(
-														header.column.columnDef
-															.header,
-														header.getContext(),
+							<div className="transaction-table-scroll">
+								<table>
+									<thead>
+										{table
+											.getHeaderGroups()
+											.map((group) => (
+												<tr key={group.id}>
+													{group.headers.map(
+														(header) => (
+															<th
+																scope="col"
+																key={header.id}
+																data-column={
+																	header
+																		.column
+																		.id
+																}
+															>
+																{flexRender(
+																	header
+																		.column
+																		.columnDef
+																		.header,
+																	header.getContext(),
+																)}
+															</th>
+														),
 													)}
-												</th>
+												</tr>
 											))}
-										</tr>
-									))}
-								</thead>
-								<tbody>
-									{table.getRowModel().rows.map((row) => (
-										<tr key={row.original.id}>
+									</thead>
+									<tbody>
+										{table.getRowModel().rows.map((row) => (
+											<tr key={row.original.id}>
+												{row
+													.getVisibleCells()
+													.map((cell) => (
+														<td
+															key={cell.id}
+															data-column={
+																cell.column.id
+															}
+														>
+															{flexRender(
+																cell.column
+																	.columnDef
+																	.cell,
+																cell.getContext(),
+															)}
+														</td>
+													))}
+											</tr>
+										))}
+									</tbody>
+								</table>
+							</div>
+							<ul className="transaction-mobile-list">
+								{table.getRowModel().rows.map((row) => (
+									<li key={row.original.id}>
+										<dl>
 											{row
 												.getVisibleCells()
 												.map((cell) => (
-													<td key={cell.id} data-column={cell.column.id}>
-														{flexRender(
-															cell.column
-																.columnDef.cell,
-															cell.getContext(),
-														)}
-													</td>
+													<div
+														key={cell.id}
+														data-column={
+															cell.column.id
+														}
+													>
+														<dt>
+															{flexRender(
+																cell.column
+																	.columnDef
+																	.header,
+																table
+																	.getFlatHeaders()
+																	.find(
+																		(
+																			header,
+																		) =>
+																			header
+																				.column
+																				.id ===
+																			cell
+																				.column
+																				.id,
+																	)!
+																	.getContext(),
+															)}
+														</dt>
+														<dd>
+															{flexRender(
+																cell.column
+																	.columnDef
+																	.cell,
+																cell.getContext(),
+															)}
+														</dd>
+													</div>
 												))}
-										</tr>
-									))}
-								</tbody>
-							</table>
-						</div>
-						<ul className="transaction-mobile-list">
-							{table.getRowModel().rows.map(row => <li key={row.original.id}>
-								<dl>{row.getVisibleCells().map(cell => <div key={cell.id} data-column={cell.column.id}>
-									<dt>{flexRender(cell.column.columnDef.header, table.getFlatHeaders().find(header => header.column.id === cell.column.id)!.getContext())}</dt>
-									<dd>{flexRender(cell.column.columnDef.cell, cell.getContext())}</dd>
-								</div>)}</dl>
-							</li>)}
-						</ul>
+										</dl>
+									</li>
+								))}
+							</ul>
 						</>
 					)}
 					<footer className="transaction-pagination">
@@ -484,7 +557,13 @@ export function TransactionsPage() {
 					restoreFocus={restoreFocus}
 				/>
 			)}
-			{dialog?.mode === 'details' && <TransactionDetailsDialog transaction={dialog.transaction} onClose={() => setDialog(null)} restoreFocus={restoreFocus} />}
+			{dialog?.mode === 'details' && (
+				<TransactionDetailsDialog
+					transaction={dialog.transaction}
+					onClose={() => setDialog(null)}
+					restoreFocus={restoreFocus}
+				/>
+			)}
 			{dialog?.mode === 'edit' && (
 				<TransactionDialog
 					transaction={dialog.transaction}

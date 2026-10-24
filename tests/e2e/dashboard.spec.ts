@@ -82,11 +82,8 @@ test.afterAll(async () => {
 async function login(page: Page) {
 	const session = (await f.alice.auth.getSession()).data.session!
 	await page.addInitScript(
-		({session, storageKey}) =>
-			localStorage.setItem(
-				storageKey,
-				JSON.stringify(session),
-			),
+		({ session, storageKey }) =>
+			localStorage.setItem(storageKey, JSON.stringify(session)),
 		{ session, storageKey: f.storageKey },
 	)
 	await page.goto('/')

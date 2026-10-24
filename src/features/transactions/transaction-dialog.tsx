@@ -4,7 +4,10 @@ import { AlertDialog, Dialog } from 'radix-ui'
 import { X } from 'lucide-react'
 import { Button } from '../../components/ui/button'
 import { Input } from '../../components/ui/input'
-import { countTitleCharacters, normalizeFinancialTitle } from '../../lib/financial-text'
+import {
+	countTitleCharacters,
+	normalizeFinancialTitle,
+} from '../../lib/financial-text'
 import { formatBrl, parseAmountPtBr } from '../../lib/money'
 import { formatDateBr, todayInSaoPaulo } from '../../lib/dates'
 import type { Category } from '../categories/types'
@@ -37,8 +40,15 @@ export function TransactionDialog({
 	const busy = mutations.create.isPending || mutations.update.isPending
 	const form = useForm({
 		onSubmitInvalid: ({ formApi }) => {
-			const fields = [['description', 'tx-description'], ['occurred_on', 'tx-date'], ['amount', 'tx-amount'], ['category_id', 'tx-category']] as const
-			const invalid = fields.find(([name]) => formApi.getFieldMeta(name)?.errors.length)
+			const fields = [
+				['description', 'tx-description'],
+				['occurred_on', 'tx-date'],
+				['amount', 'tx-amount'],
+				['category_id', 'tx-category'],
+			] as const
+			const invalid = fields.find(
+				([name]) => formApi.getFieldMeta(name)?.errors.length,
+			)
 			if (invalid) document.getElementById(invalid[1])?.focus()
 		},
 		defaultValues: {
@@ -166,8 +176,26 @@ export function TransactionDialog({
 						<form.Field
 							name="description"
 							validators={{
-								onBlur: ({ value }) => { try { normalizeFinancialTitle(value, 'transaction') } catch (cause) { return (cause as Error).message } },
-								onSubmit: ({ value }) => { try { normalizeFinancialTitle(value, 'transaction') } catch (cause) { return (cause as Error).message } },
+								onBlur: ({ value }) => {
+									try {
+										normalizeFinancialTitle(
+											value,
+											'transaction',
+										)
+									} catch (cause) {
+										return (cause as Error).message
+									}
+								},
+								onSubmit: ({ value }) => {
+									try {
+										normalizeFinancialTitle(
+											value,
+											'transaction',
+										)
+									} catch (cause) {
+										return (cause as Error).message
+									}
+								},
 							}}
 						>
 							{(field) => (
@@ -188,20 +216,33 @@ export function TransactionDialog({
 										placeholder="Ex. Almoço"
 										required
 										aria-invalid={!field.state.meta.isValid}
-										aria-describedby={
-											`tx-description-hint${field.state.meta.errors.length ? ' tx-description-error' : ''}`
-										}
+										aria-describedby={`tx-description-hint${field.state.meta.errors.length ? ' tx-description-error' : ''}`}
 									/>
-									<p id="tx-description-hint" className="field-hint">{countTitleCharacters(field.state.value)}/20 — Até 20 caracteres; emojis compostos podem contar mais de um. Ao editar um título antigo, corrija-o antes de salvar.</p>
-									{(
+									<p
+										id="tx-description-hint"
+										className="field-hint"
+									>
+										{countTitleCharacters(
+											field.state.value,
+										)}
+										/20 — Até 20 caracteres; emojis
+										compostos podem contar mais de um. Ao
+										editar um título antigo, corrija-o antes
+										de salvar.
+									</p>
+									{
 										<p
 											id="tx-description-error"
 											className="error field-error"
-											role={field.state.meta.errors.length ? 'alert' : undefined}
+											role={
+												field.state.meta.errors.length
+													? 'alert'
+													: undefined
+											}
 										>
 											{field.state.meta.errors.join(' ')}
 										</p>
-									)}
+									}
 								</div>
 							)}
 						</form.Field>

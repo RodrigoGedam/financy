@@ -8,10 +8,10 @@ Site URL de produção salva e reconferida após reload: `https://financy-gules.
 
 Organização Supabase escolhida: `RodrigoGedam's Org` (`nkblcxsitlciadoapxzo`). Ambos os projetos foram criados pelo usuário no plano Free, região São Paulo (`sa-east-1`).
 
-| Ambiente | Projeto | Referência |
-| --- | --- | --- |
-| Desenvolvimento | financy-dev | gorymmpnavtudztnasny |
-| Produção | financy-prod | bqkmhzrrfurphiikylpa |
+| Ambiente        | Projeto      | Referência           |
+| --------------- | ------------ | -------------------- |
+| Desenvolvimento | financy-dev  | gorymmpnavtudztnasny |
+| Produção        | financy-prod | bqkmhzrrfurphiikylpa |
 
 A base local usa somente desenvolvimento. Produção não recebe testes, fixtures ou cadastros automáticos.
 
@@ -67,11 +67,11 @@ Configuração local pronta: raiz do repositório, framework Vite, Node 24, pnpm
 
 ### Variáveis e URLs por ambiente
 
-| Alvo | `VITE_SUPABASE_URL` | `VITE_SUPABASE_PUBLISHABLE_KEY` | Auth |
-| --- | --- | --- | --- |
-| Local / Vercel Development | `https://gorymmpnavtudztnasny.supabase.co` | Chave publicável ativa do desenvolvimento | Site URL local `http://127.0.0.1:5173` |
-| Vercel Preview | A mesma URL de desenvolvimento | Chave publicável de desenvolvimento | Adicionar somente origens/URLs Preview exatas após sua atribuição; sem curingas |
-| Vercel Production | `https://bqkmhzrrfurphiikylpa.supabase.co` | Chave publicável ativa de produção | Substituir Site URL local pela origem HTTPS canônica atribuída ao projeto |
+| Alvo                       | `VITE_SUPABASE_URL`                        | `VITE_SUPABASE_PUBLISHABLE_KEY`           | Auth                                                                            |
+| -------------------------- | ------------------------------------------ | ----------------------------------------- | ------------------------------------------------------------------------------- |
+| Local / Vercel Development | `https://gorymmpnavtudztnasny.supabase.co` | Chave publicável ativa do desenvolvimento | Site URL local `http://127.0.0.1:5173`                                          |
+| Vercel Preview             | A mesma URL de desenvolvimento             | Chave publicável de desenvolvimento       | Adicionar somente origens/URLs Preview exatas após sua atribuição; sem curingas |
+| Vercel Production          | `https://bqkmhzrrfurphiikylpa.supabase.co` | Chave publicável ativa de produção        | Substituir Site URL local pela origem HTTPS canônica atribuída ao projeto       |
 
 Uma chave moderna publicável ativa foi confirmada em cada projeto, sem registrar seus valores. Não cadastrar `FINANCY_DEV_PROJECT_REF` na Vercel; serve somente à trava dos testes. Não cadastrar senhas de banco, service_role ou tokens de gerenciamento no frontend, principalmente sob `VITE_`. Definir variáveis nos ambientes corretos antes do build e reconferir o destino incorporado sem imprimir a chave. Preview não recebe credenciais de produção. Alterar variável exige novo build; não promover um bundle Preview com ambiente de desenvolvimento para Production.
 

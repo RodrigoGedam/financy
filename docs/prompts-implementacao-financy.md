@@ -6,26 +6,26 @@ Análise de 15/10/2026. Destino dos prompts: **Codex**. Base inspecionada: commi
 
 O projeto concluiu a entrega de base e acesso. O próximo trabalho funcional é preparar o catálogo visual e implementar integridade e autorização dos dados financeiros, antes das páginas de gestão.
 
-| Área | Evidência no repositório | Situação |
-| --- | --- | --- |
-| Base | `package.json`, lockfile, `src/main.tsx`, configurações Vite/TypeScript | Implementada; React 19, Vite 8, TypeScript 6, pnpm 12.4.2 |
-| Acesso e perfil | `src/features/auth/`, proteção em `src/router.tsx` | Cadastro, login, restauração de sessão, edição do nome e logout implementados |
-| Isolamento do cache | `src/lib/session-cache.ts`, teste e `auth-provider.tsx` | Cancelamento e limpeza na troca de identidade; teste unitário passou novamente |
-| Visual da base | `DESIGN.md`, `src/styles.css`, `AppShell`, `Logo`, `Button`, `Input` | Referências de acesso já registradas; catálogo financeiro ainda ausente |
-| Categorias, transações e dashboard | `FeaturePending` em `src/router.tsx` | Somente rotas reservadas; não são funcionalidades concluídas |
-| Banco financeiro | Ausência de `supabase/`, migrations e tipos gerados | Não implementado no repositório; estado remoto não consultado nesta análise |
-| Testes financeiros | Ausência de `tests/integration/` e testes E2E financeiros | Pendentes |
-| Publicação | Sem `vercel.json`; `docs/operations.md` registra hospedagem pendente | Não há evidência local de publicação; GitHub/Vercel não reconsultados |
+| Área                               | Evidência no repositório                                                | Situação                                                                       |
+| ---------------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| Base                               | `package.json`, lockfile, `src/main.tsx`, configurações Vite/TypeScript | Implementada; React 19, Vite 8, TypeScript 6, pnpm 12.4.2                      |
+| Acesso e perfil                    | `src/features/auth/`, proteção em `src/router.tsx`                      | Cadastro, login, restauração de sessão, edição do nome e logout implementados  |
+| Isolamento do cache                | `src/lib/session-cache.ts`, teste e `auth-provider.tsx`                 | Cancelamento e limpeza na troca de identidade; teste unitário passou novamente |
+| Visual da base                     | `DESIGN.md`, `src/styles.css`, `AppShell`, `Logo`, `Button`, `Input`    | Referências de acesso já registradas; catálogo financeiro ainda ausente        |
+| Categorias, transações e dashboard | `FeaturePending` em `src/router.tsx`                                    | Somente rotas reservadas; não são funcionalidades concluídas                   |
+| Banco financeiro                   | Ausência de `supabase/`, migrations e tipos gerados                     | Não implementado no repositório; estado remoto não consultado nesta análise    |
+| Testes financeiros                 | Ausência de `tests/integration/` e testes E2E financeiros               | Pendentes                                                                      |
+| Publicação                         | Sem `vercel.json`; `docs/operations.md` registra hospedagem pendente    | Não há evidência local de publicação; GitHub/Vercel não reconsultados          |
 
 ### Verificações executadas nesta análise
 
-| Comando | Resultado |
-| --- | --- |
-| `pnpm typecheck` | Passou |
-| `pnpm lint` | Passou |
-| `pnpm test` | 1 teste passou |
+| Comando                                              | Resultado                                                                                    |
+| ---------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `pnpm typecheck`                                     | Passou                                                                                       |
+| `pnpm lint`                                          | Passou                                                                                       |
+| `pnpm test`                                          | 1 teste passou                                                                               |
 | `pnpm exec playwright test tests/e2e/access.spec.ts` | 5 testes passaram: navegação, rota privada, falha de rede, teclado e largura de 1024/1440 px |
-| `pnpm build` | Passou; chunk principal de 572,40 kB, 169,09 kB gzip; aviso acima de 500 kB |
+| `pnpm build`                                         | Passou; chunk principal de 572,40 kB, 169,09 kB gzip; aviso acima de 500 kB                  |
 
 O registro `docs/superpowers/execution/2026-10-15-financy-base.md` relata 7 E2E aprovados na entrega anterior, incluindo autenticação real. Nesta análise foram repetidos apenas os 5 de acesso, sem os testes que criam contas. Não confundir evidência histórica com nova verificação. O aviso do build merece medição na revisão final, mas não justifica uma refatoração antecipada.
 
@@ -78,17 +78,17 @@ Todos os prompts abaixo incorporam este contrato:
 
 ## 3. Sequência e entregáveis
 
-| Prompt | Escopo | Relação com o plano | Conclusão verificável |
-| --- | --- | --- | --- |
-| 0 | Retomar contexto | Antes de executar | Estado e próxima etapa confirmados |
-| 1 | Referências financeiras e catálogo | Pré-requisito da tarefa 2 | Catálogo rastreável ao Figma |
-| 2 | Banco, RLS e contratos da API | Tarefa 2 | Integridade e isolamento demonstrados via API |
-| 3 | Categorias | Tarefa 3 | CRUD e contagens corretos |
-| 4 | Dinheiro, datas e URL | Primeira parte da tarefa 4 | Casos de borda aprovados |
-| 5 | Transações | Restante da tarefa 4 | CRUD, filtros e paginação reais |
-| 6 | Dashboard | Tarefa 5 | Agregações completas e isoladas |
-| 7 | Revisão integrada | Primeira parte da tarefa 6 | Fluxo completo verificado em desenvolvimento |
-| 8 | Preparação e publicação | Restante da tarefa 6 | Release preparada e publicação condicionada ao alvo/autorização |
+| Prompt | Escopo                             | Relação com o plano        | Conclusão verificável                                           |
+| ------ | ---------------------------------- | -------------------------- | --------------------------------------------------------------- |
+| 0      | Retomar contexto                   | Antes de executar          | Estado e próxima etapa confirmados                              |
+| 1      | Referências financeiras e catálogo | Pré-requisito da tarefa 2  | Catálogo rastreável ao Figma                                    |
+| 2      | Banco, RLS e contratos da API      | Tarefa 2                   | Integridade e isolamento demonstrados via API                   |
+| 3      | Categorias                         | Tarefa 3                   | CRUD e contagens corretos                                       |
+| 4      | Dinheiro, datas e URL              | Primeira parte da tarefa 4 | Casos de borda aprovados                                        |
+| 5      | Transações                         | Restante da tarefa 4       | CRUD, filtros e paginação reais                                 |
+| 6      | Dashboard                          | Tarefa 5                   | Agregações completas e isoladas                                 |
+| 7      | Revisão integrada                  | Primeira parte da tarefa 6 | Fluxo completo verificado em desenvolvimento                    |
+| 8      | Preparação e publicação            | Restante da tarefa 6       | Release preparada e publicação condicionada ao alvo/autorização |
 
 ## Prompt 0 — Retomar sem repetir a base
 

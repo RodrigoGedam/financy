@@ -36,11 +36,17 @@ function category(value: unknown): Category {
 		typeof r.color !== 'string' ||
 		typeof r.icon !== 'string' ||
 		!isCategoryColor(r.color) ||
-		!isCategoryIcon(r.icon)
-		|| (r.description !== null && typeof r.description !== 'string')
+		!isCategoryIcon(r.icon) ||
+		(r.description !== null && typeof r.description !== 'string')
 	)
 		throw invalid()
-	return { id: text(r.id), name: text(r.name), description: r.description as string | null, color: r.color, icon: r.icon }
+	return {
+		id: text(r.id),
+		name: text(r.name),
+		description: r.description as string | null,
+		color: r.color,
+		icon: r.icon,
+	}
 }
 function limitedList(value: unknown): unknown[] {
 	if (!Array.isArray(value) || value.length > 5) throw invalid()

@@ -16,8 +16,7 @@ export function recordFixtureUser(userId: string, runId: string) {
 	mkdirSync('test-fixtures', { recursive: true })
 	appendFileSync(
 		'test-fixtures/finance-users.jsonl',
-		JSON.stringify({ runId, projectRef, userId }) +
-			'\n',
+		JSON.stringify({ runId, projectRef, userId }) + '\n',
 	)
 }
 

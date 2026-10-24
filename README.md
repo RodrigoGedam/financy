@@ -32,18 +32,18 @@ Use somente a chave publicável no frontend. Credenciais administrativas, senhas
 
 ## Comandos
 
-| Comando | Uso |
-| --- | --- |
-| `pnpm dev` | Servidor local |
-| `pnpm typecheck` | Verificação TypeScript |
-| `pnpm lint` | Análise estática |
-| `pnpm format` | Aplicar a formatação do Prettier |
-| `pnpm format:check` | Conferir formatação sem alterar arquivos |
-| `pnpm test` | Testes unitários de comportamento |
+| Comando                 | Uso                                                        |
+| ----------------------- | ---------------------------------------------------------- |
+| `pnpm dev`              | Servidor local                                             |
+| `pnpm typecheck`        | Verificação TypeScript                                     |
+| `pnpm lint`             | Análise estática                                           |
+| `pnpm format`           | Aplicar a formatação do Prettier                           |
+| `pnpm format:check`     | Conferir formatação sem alterar arquivos                   |
+| `pnpm test`             | Testes unitários de comportamento                          |
 | `pnpm test:integration` | RLS, integridade e decimais no Supabase de desenvolvimento |
-| `pnpm test:e2e` | Fluxos no Chromium e Supabase de desenvolvimento |
-| `pnpm build` | Build em `dist/` |
-| `pnpm preview` | Conferir o build local |
+| `pnpm test:e2e`         | Fluxos no Chromium e Supabase de desenvolvimento           |
+| `pnpm build`            | Build em `dist/`                                           |
+| `pnpm preview`          | Conferir o build local                                     |
 
 Para os testes de navegador, instale o Chromium com `pnpm exec playwright install chromium`. Crie `.env.test.local` com `FINANCY_DEV_PROJECT_REF=gorymmpnavtudztnasny` e as variáveis publicáveis de desenvolvimento. Integração e Playwright validam referência e URL exatas ao carregar a configuração, antes de iniciar servidor ou fixtures. O Playwright inicia seu próprio servidor e recusa uma porta 5173 já ocupada. Contas fictícias `financy-data-alice-<runId>@example.com` e `financy-data-bob-<runId>@example.com` têm seus IDs registrados em `test-fixtures/finance-users.jsonl`, ignorado pelo Git, sem senhas/JWTs. Limpeza administrativa somente pelos IDs e e-mails exatos da execução, depois de conferir dependências e sessões, conforme `docs/operations.md`.
 
@@ -63,11 +63,11 @@ Estado de sessão em um provider único; dados remotos em TanStack Query; limpez
 
 `vercel.json` configura Vite, instalação pelo lockfile, build `pnpm build`, saída `dist` e fallback para `index.html`, permitindo acesso direto a `/transacoes`, `/categorias` e `/perfil`. Usar Node 24 no projeto Vercel, pnpm 12.4.2 definido em `packageManager` e diretório raiz do repositório. Não há CI adicional ou serviços novos.
 
-| Ambiente do frontend | Supabase | Variáveis do bundle |
-| --- | --- | --- |
-| Local / Vercel Development / Preview | financy-dev — `gorymmpnavtudztnasny` | `VITE_SUPABASE_URL` e `VITE_SUPABASE_PUBLISHABLE_KEY` do desenvolvimento |
-| Vercel Production | financy-prod — `bqkmhzrrfurphiikylpa` | As mesmas duas variáveis, com valores exclusivos de produção |
-| Integração / E2E | Somente financy-dev | As duas variáveis e `FINANCY_DEV_PROJECT_REF`, em `.env.test.local` |
+| Ambiente do frontend                 | Supabase                              | Variáveis do bundle                                                      |
+| ------------------------------------ | ------------------------------------- | ------------------------------------------------------------------------ |
+| Local / Vercel Development / Preview | financy-dev — `gorymmpnavtudztnasny`  | `VITE_SUPABASE_URL` e `VITE_SUPABASE_PUBLISHABLE_KEY` do desenvolvimento |
+| Vercel Production                    | financy-prod — `bqkmhzrrfurphiikylpa` | As mesmas duas variáveis, com valores exclusivos de produção             |
+| Integração / E2E                     | Somente financy-dev                   | As duas variáveis e `FINANCY_DEV_PROJECT_REF`, em `.env.test.local`      |
 
 Vite incorpora as variáveis durante o build: mudar o ambiente exige novo build. Não promover um bundle de Preview com credenciais de desenvolvimento para Production. Não enviar `.env.local`, sessões, traces, backups ou `graphify-out/` para o GitHub/Vercel; `.gitignore` e `.vercelignore` protegem esses artefatos. Segredos administrativos nunca recebem prefixo `VITE_` e não são necessários ao frontend.
 

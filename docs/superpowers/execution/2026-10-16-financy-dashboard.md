@@ -43,17 +43,17 @@ Inspeção em **1024/1440 px**, sem rolagem horizontal da página. Capturas igno
 
 ## Evidências de verificação
 
-| Verificação | Resultado |
-| --- | --- |
-| RED integração inicial | Falhou com `PGRST202`, RPC ainda inexistente |
-| RED unitário inicial | Falhou por ausência de `./api` |
-| Pré-requisitos categorias/transações | 6 integrações passaram |
-| `pnpm test` | **153 testes**, nove arquivos, passaram |
-| `pnpm test:integration` | **19 testes**, cinco arquivos, passaram; 95,64 s |
-| `pnpm exec playwright test tests/e2e/dashboard.spec.ts tests/e2e/categories.spec.ts tests/e2e/transactions.spec.ts tests/e2e/access.spec.ts` | **12 testes passaram**, 2,4 min |
-| `pnpm typecheck` / `pnpm lint` | Passaram sem avisos |
-| Prettier nos arquivos novos do dashboard e seus testes | Passou |
-| `pnpm build` | Passou; principal 320,74 kB / 102,49 kB gzip; dashboard 8,20 kB / 2,59 kB gzip; nenhum chunk acima de 500 kB |
+| Verificação                                                                                                                                  | Resultado                                                                                                    |
+| -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| RED integração inicial                                                                                                                       | Falhou com `PGRST202`, RPC ainda inexistente                                                                 |
+| RED unitário inicial                                                                                                                         | Falhou por ausência de `./api`                                                                               |
+| Pré-requisitos categorias/transações                                                                                                         | 6 integrações passaram                                                                                       |
+| `pnpm test`                                                                                                                                  | **153 testes**, nove arquivos, passaram                                                                      |
+| `pnpm test:integration`                                                                                                                      | **19 testes**, cinco arquivos, passaram; 95,64 s                                                             |
+| `pnpm exec playwright test tests/e2e/dashboard.spec.ts tests/e2e/categories.spec.ts tests/e2e/transactions.spec.ts tests/e2e/access.spec.ts` | **12 testes passaram**, 2,4 min                                                                              |
+| `pnpm typecheck` / `pnpm lint`                                                                                                               | Passaram sem avisos                                                                                          |
+| Prettier nos arquivos novos do dashboard e seus testes                                                                                       | Passou                                                                                                       |
+| `pnpm build`                                                                                                                                 | Passou; principal 320,74 kB / 102,49 kB gzip; dashboard 8,20 kB / 2,59 kB gzip; nenhum chunk acima de 500 kB |
 
 Integração financeira real, com chave publicável e sessões Alice/Bob/anônimo:
 
