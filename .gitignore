@@ -12,4 +12,3 @@ coverage/
 *.tsbuildinfo
 backups/
 supabase/.temp/
-graphify-out/

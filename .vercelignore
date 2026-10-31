@@ -10,7 +10,6 @@ test-results/
 playwright-report/
 coverage/
 backups/
-graphify-out/
 .superpowers/
 .worktrees/
 docs/
